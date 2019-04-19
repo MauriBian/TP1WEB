@@ -2,6 +2,7 @@
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
+const commands = require('./commands');
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -21,9 +22,9 @@ function saveUNQfy(unqfy, filename = 'data.json') {
  e implementar los diferentes comandos.
 
   Se deberán implementar los comandos:
-    - Alta y baja de Artista
-    - Alta y Baja de Albums
-    - Alta y Baja de tracks
+    - Alta y baja de Artista LISTO
+    - Alta y Baja de Albums LISTO
+    - Alta y Baja de tracks LISTO
 
     - Listar todos los Artistas
     - Listar todos los albumes de un artista
@@ -47,8 +48,9 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
-  console.log('arguments: ');
-  process.argv.forEach(argument => console.log(argument));
+  //console.log('arguments: ');
+  process.argv.forEach(argument => /*console.log(argument) */    commands.executeIfExists(argument,process.argv)  );
 }
+
 
 main();
