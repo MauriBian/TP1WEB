@@ -46,4 +46,4 @@ class Artist extends Searchable{
   }
 }
 
-module.exports = Artist;
+module.exports = {Artist : Artist};

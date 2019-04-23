@@ -1,6 +1,16 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
+const artistMod = require('./artist')
+const Artist = artistMod.Artist
+const albumMod= require('./album')
+const Album = albumMod.Album
+const trackMod = require('./track')
+const Track = trackMod.Track
+const playListMod = require('./playlist')
+const PlayList = playListMod.PlayList
+const playListGeneratorMod = require('./playListGenerator')
+const PlayListGenerator = playListGeneratorMod.PlayListGenerator
 
 
 class UNQfy {
@@ -8,7 +18,8 @@ class UNQfy {
     this.artists = []
     this.tracks = []
     this.albums = []
-    this.playList = []
+    this.playLists = []
+    this.playListgenerator = new PlayListGenerator(this.tracks)
   }
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -19,9 +30,9 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    let artistObj = JSON.parse(artistData)
-    let artist = new Artist(artistObj.name,artistObj.country)
-    this.artists.push(artist)
+      let artist = new Artist(artistData.id,artistData.name,artistData.country,artistData.albums)
+      this.artists.push(artist)
+      return artist
   
   }
 
@@ -36,9 +47,11 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-      let albumObj = Json.parse(albumData)
-      let album = new Album(albumObj.name,albumObj.year)
-      this.albums.push(album)
+    let artista =  this.getArtistById(artistId)
+    let album = new Album(albumData.id,albumData.name,albumData.year,artista)
+    artista.albums.push(album)
+    this.albums.push(album)
+    return album
   }
 
 
@@ -54,33 +67,56 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+   let track = new Track(trackData.id,trackData.name,trackData.duration,trackData.genres)
+   this.getAlbumById(albumId).tracks.push(track)
+   this.tracks.push(track)
+   return track
   }
 
   getArtistById(id) {
-
+    return this.artists.find(elem => elem.id === id)
   }
 
   getAlbumById(id) {
-
+    return this.albums.find(elem => elem.id === id)
   }
 
   getTrackById(id) {
-
+    return this.tracks.find(elem => elem.id === id)
   }
 
   getPlaylistById(id) {
-
+    return this.playLists.find(elem => elem.id === id)
   }
 
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
+    return this.playListgenerator.getTracksMatchingGenres(genres,this.tracks)
+  }
 
+  containsGen(track,genres){
+    return genres.some(elem => track.genres.includes(elem))
   }
 
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
+    let artist =  this.artists.find(art => art.name === artistName)
+    return artist.albums.map(album => album.tracks).flat()
+
+  }
+
+  searchByName(name){
+
+    let artistfiltered = this.artists.filter(elem => elem.name.includes(name))
+    let albumfiltered = this.albums.filter(elem => elem.name.includes(name))
+    let trackfiltered = this.tracks.filter(elem => elem.name.includes(name))
+    let playListfiltered = this.playLists.filter(elem => elem.name.includes(name))
+    return {artists : artistfiltered,
+    albums : albumfiltered,
+    tracks : trackfiltered,
+    playlists : playListfiltered}
 
   }
 
@@ -96,6 +132,10 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
+    let newplayList =this.playListgenerator.CreatePlayList(name,genresToInclude,maxDuration)
+    this.playLists.push(newplayList)
+    return newplayList
+
 
   }
 
@@ -116,6 +156,9 @@ class UNQfy {
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
+
+
+
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {

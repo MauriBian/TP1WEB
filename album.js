@@ -55,4 +55,4 @@ class Album extends Searchable{
   }
 }
 
-module.exports = Album;
+module.exports = {Album : Album};

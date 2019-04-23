@@ -33,4 +33,4 @@ class Track extends Searchable{
 
 }
 
-module.exports = Track;
+module.exports = {Track : Track};

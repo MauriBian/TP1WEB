@@ -32,6 +32,12 @@ class Playlist extends Searchable{
     this.genres = genres;
   }
 
+  hasTrack(aTrack){
+   return  this.tracks.includes(aTrack)
+  }
+
 }
 
-module.exports = Playlist;
+
+
+module.exports = {Playlist : Playlist};
