@@ -8,10 +8,9 @@ const Album = albumMod.Album
 const trackMod = require('./track')
 const Track = trackMod.Track
 const playListMod = require('./playlist')
-const PlayList = playListMod.PlayList
+const PlayList = playListMod.Playlist
 const playListGeneratorMod = require('./playListGenerator')
 const PlayListGenerator = playListGeneratorMod.PlayListGenerator
-
 
 class UNQfy {
   constructor() {
@@ -93,15 +92,15 @@ class UNQfy {
   }
 
   RemoveAlbum(id){
-    this.artists.pop(getArtistById(id))
+    this.albums.pop(getArtistById(id))
+  }
+
+  RemoveTrack(id){
+    this.tracks.pop(getArtistById(id))
   }
 
   RemoveArtist(id){
-    this.artists.pop(getArtistById(id))
-  }
-
-  RemoveArtist(id){
-    this.artists.pop(getArtistById(id))
+    this.tracks.pop(getArtistById(id))
   }
 
   getArtistById(id) {
@@ -187,7 +186,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy,Artist,Album,Track,PlayList,PlayListGenerator];
+    const classes = [UNQfy,Artist,Album,Track,PlayListGenerator,PlayList];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
