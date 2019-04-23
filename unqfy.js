@@ -37,7 +37,7 @@ class UNQfy {
       this.artists.push(artist)
       return artist
     }
-    catch{
+    catch(error){
       throw new Error("Datos incorrectos")
     }
  
@@ -63,7 +63,7 @@ class UNQfy {
       this.albums.push(album)
       return album
     }
-    catch{
+    catch(error){
       throw new Error("Datos Incorrectos")
     }
 
@@ -89,7 +89,7 @@ class UNQfy {
     this.tracks.push(track)
     return track
     }
-    catch{
+    catch(error){
       throw new Error("Datos Incorrectos")
     }
 
@@ -160,7 +160,7 @@ class UNQfy {
       return newplayList
   
     }
-    catch{
+    catch(error){
       throw Error("Datos Incorrectos")
     }
 
@@ -180,7 +180,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy,Artist,Album,Track,PlayList];
+    const classes = [UNQfy,Artist,Album,Track,PlayList,PlayListGenerator];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
