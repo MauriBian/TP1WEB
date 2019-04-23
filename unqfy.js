@@ -31,15 +31,13 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-    try{
+ 
       let artist = new Artist(this.lastId,artistData.name,artistData.country,artistData.albums)
       this.lastId += 1
       this.artists.push(artist)
       return artist
-    }
-    catch(error){
-      throw new Error("Datos incorrectos")
-    }
+    
+
  
   
   }
@@ -55,17 +53,15 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    try{
+
       let artista =  this.getArtistById(artistId)
       let album = new Album(this.lastId,albumData.name,albumData.year,artista)
       this.lastId+= 1
       artista.albums.push(album)
       this.albums.push(album)
       return album
-    }
-    catch(error){
-      throw new Error("Datos Incorrectos")
-    }
+    
+
 
   }
 
@@ -82,17 +78,30 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-   try{
+ 
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
     this.lastId += 1
     this.getAlbumById(albumId).tracks.push(track)
     this.tracks.push(track)
     return track
-    }
-    catch(error){
-      throw new Error("Datos Incorrectos")
-    }
 
+
+  }
+
+  RemoveArtist(id){
+    this.artists.pop(getArtistById(id))
+  }
+
+  RemoveAlbum(id){
+    this.artists.pop(getArtistById(id))
+  }
+
+  RemoveArtist(id){
+    this.artists.pop(getArtistById(id))
+  }
+
+  RemoveArtist(id){
+    this.artists.pop(getArtistById(id))
   }
 
   getArtistById(id) {
@@ -154,15 +163,13 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    try{
-      let newplayList =this.playListgenerator.CreatePlayList(name,genresToInclude,maxDuration)
+
+      let newplayList =this.playListgenerator.CreatePlayList(this.lastId,name,genresToInclude,maxDuration)
+      this.lastId+= 1
       this.playLists.push(newplayList)
       return newplayList
   
-    }
-    catch(error){
-      throw Error("Datos Incorrectos")
-    }
+   
 
 
   }
