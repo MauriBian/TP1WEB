@@ -31,10 +31,16 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    try{
       let artist = new Artist(this.lastId,artistData.name,artistData.country,artistData.albums)
       this.lastId += 1
       this.artists.push(artist)
       return artist
+    }
+    catch{
+      throw new Error("Datos incorrectos")
+    }
+ 
   
   }
 
@@ -49,12 +55,18 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-    let artista =  this.getArtistById(artistId)
-    let album = new Album(this.lastId,albumData.name,albumData.year,artista)
-    this.lastId+= 1
-    artista.albums.push(album)
-    this.albums.push(album)
-    return album
+    try{
+      let artista =  this.getArtistById(artistId)
+      let album = new Album(this.lastId,albumData.name,albumData.year,artista)
+      this.lastId+= 1
+      artista.albums.push(album)
+      this.albums.push(album)
+      return album
+    }
+    catch{
+      throw new Error("Datos Incorrectos")
+    }
+
   }
 
 
@@ -70,11 +82,17 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-   let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
-   this.lastId += 1
-   this.getAlbumById(albumId).tracks.push(track)
-   this.tracks.push(track)
-   return track
+   try{
+    let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
+    this.lastId += 1
+    this.getAlbumById(albumId).tracks.push(track)
+    this.tracks.push(track)
+    return track
+    }
+    catch{
+      throw new Error("Datos Incorrectos")
+    }
+
   }
 
   getArtistById(id) {
@@ -136,9 +154,15 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-    let newplayList =this.playListgenerator.CreatePlayList(name,genresToInclude,maxDuration)
-    this.playLists.push(newplayList)
-    return newplayList
+    try{
+      let newplayList =this.playListgenerator.CreatePlayList(name,genresToInclude,maxDuration)
+      this.playLists.push(newplayList)
+      return newplayList
+  
+    }
+    catch{
+      throw Error("Datos Incorrectos")
+    }
 
 
   }
@@ -156,7 +180,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy,Artist,Album,Track,PlayList];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
@@ -167,5 +191,12 @@ class UNQfy {
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
   UNQfy,
+  Artist,
+  Album,
+  Track,
+  PlayList,
+
+
 };
+
 

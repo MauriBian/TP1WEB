@@ -19,8 +19,8 @@ class PlayListGenerator{
       }
  
       ReduceByTime(tracks,duration){
-        var time = 0
-        var newTracks = []
+        let time = 0
+        let newTracks = []
     
 
         while( tracks.length > 0 && time <= duration ){
