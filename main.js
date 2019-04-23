@@ -1,21 +1,9 @@
 
 
-const fs = require('fs'); // necesitado para guardar/cargar unqfy
-const unqmod = require('./unqfy'); // importamos el modulo unqfy
+
 const commands = require('./commands');
 
-// Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
-function getUNQfy(filename = 'data.json') {
-  let unqfy = new unqmod.UNQfy();
-  if (fs.existsSync(filename)) {
-    unqfy = unqmod.UNQfy.load(filename);
-  }
-  return unqfy;
-}
 
-function saveUNQfy(unqfy, filename = 'data.json') {
-  unqfy.save(filename);
-}
 
 /*
  En esta funcion deberán interpretar los argumentos pasado por linea de comandos
@@ -48,9 +36,15 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
+
   //console.log('arguments: ');
-  process.argv.forEach(argument => /*console.log(argument) */    commands.executeIfExists(argument,process.argv)  );
+  //process.argv.forEach(argument => /*console.log(argument) */    commands.executeIfExists(argument,process.argv)  );
+  commands.executeIfExists(process.argv);
 }
 
 
 main();
+
+
+
+
