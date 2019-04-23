@@ -20,6 +20,7 @@ class UNQfy {
     this.albums = []
     this.playLists = []
     this.playListgenerator = new PlayListGenerator(this.tracks)
+    this.lastId = 0
   }
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -30,7 +31,8 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
-      let artist = new Artist(artistData.id,artistData.name,artistData.country,artistData.albums)
+      let artist = new Artist(this.lastId,artistData.name,artistData.country,artistData.albums)
+      this.lastId += 1
       this.artists.push(artist)
       return artist
   
@@ -48,7 +50,8 @@ class UNQfy {
      - una propiedad year (number)
   */
     let artista =  this.getArtistById(artistId)
-    let album = new Album(albumData.id,albumData.name,albumData.year,artista)
+    let album = new Album(this.lastId,albumData.name,albumData.year,artista)
+    this.lastId+= 1
     artista.albums.push(album)
     this.albums.push(album)
     return album
@@ -67,7 +70,8 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-   let track = new Track(trackData.id,trackData.name,trackData.duration,trackData.genres)
+   let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
+   this.lastId += 1
    this.getAlbumById(albumId).tracks.push(track)
    this.tracks.push(track)
    return track
