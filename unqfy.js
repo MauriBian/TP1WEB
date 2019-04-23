@@ -195,7 +195,7 @@ module.exports = {
   Album,
   Track,
   PlayList,
-
+  PlayListGenerator
 
 };
 
