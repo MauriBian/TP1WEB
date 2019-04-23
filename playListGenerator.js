@@ -37,9 +37,9 @@ class PlayListGenerator{
         return newTracks
       }
 
-      CreatePlayList(name, genresToInclude, maxDuration){
-        let numero = Math.round(Math.random() * (100 - 1) + 1)
-        let playList = new PlayList(numero,name,genresToInclude,maxDuration,this.getTracksMatching(genresToInclude,maxDuration,this.tracks))
+      CreatePlayList(id,name, genresToInclude, maxDuration){
+
+        let playList = new PlayList(id,name,genresToInclude,maxDuration,this.getTracksMatching(genresToInclude,maxDuration,this.tracks))
         return playList
     
       }
