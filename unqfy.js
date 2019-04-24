@@ -88,20 +88,22 @@ class UNQfy {
   }
 
   RemoveArtist(id){
-    this.artists.pop(getArtistById(id))
+    this.artists.pop(this.getArtistById(id))
   }
 
   RemoveAlbum(id){
-    this.albums.pop(getArtistById(id))
+    this.albums.pop(this.getArtistById(id))
   }
 
   RemoveTrack(id){
-    this.tracks.pop(getArtistById(id))
+    this.tracks.pop(this.getArtistById(id))
   }
+
 
   RemovePlayList(id){
     this.playLists.pop(getArtistById(id))
   }
+
 
   getArtistById(id) {
     return this.artists.find(elem => elem.id === id)
