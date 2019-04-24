@@ -99,8 +99,8 @@ class UNQfy {
     this.tracks.pop(getArtistById(id))
   }
 
-  RemoveArtist(id){
-    this.tracks.pop(getArtistById(id))
+  RemovePlayList(id){
+    this.playLists.pop(getArtistById(id))
   }
 
   getArtistById(id) {
@@ -150,6 +150,21 @@ class UNQfy {
 
   }
 
+  getAllArtists(){
+    return this.artists
+  }
+
+  getAllAlbumsOfAnArtist(idArtista){
+
+   let artista =  getArtistById(idArtista)
+   return artista.albums
+
+  }
+
+  getAllTracksOfAnAlbum(idAlbum){
+    let album = getAlbumById(idAlbum)
+    return album.tracks
+  }
 
   // name: nombre de la playlist
   // genresToInclude: array de generos
