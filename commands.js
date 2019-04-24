@@ -41,25 +41,65 @@ const _addAlbum = function(argus){
 const _addTrack = function(argus){
   const unqInst = getUNQfy();
   const trackData = {
-    name : argus[0],
-    duration: argus[1],
-    genre: argus.slice(2)
+    name : argus[1],
+    duration: argus[2],
+    genre: argus.slice(3)
   }
 
-  getUNQfy().addTrack(trackData)
-  saveUNQfy(getUNQfy)
+  getUNQfy().addTrack(argus[0],trackData)
+  saveUNQfy(unqInst)
+}
+
+const _removeTrack = function(argus){
+  const unqInst = getUNQfy();
+  
+  getUNQfy().RemoveTrack(argus[0])
+  saveUNQfy(unqInst)
+}
+
+const _removeAlbum = function(argus){
+  const unqInst = getUNQfy();
+  
+  getUNQfy().RemoveAlbum(argus[0])
+  saveUNQfy(unqInst)
+}
+
+const _removeArtist = function(argus){
+  const unqInst = getUNQfy();
+  
+  getUNQfy().RemoveArtist(argus[0])
+  saveUNQfy(unqInst)
+}
+
+const _searchSongsByArtist = function (argus){
+  const unqInst = getUNQfy();
+  unqInst.getTracksMatchingArtist(argus[0]);
+  saveUNQfy(unqInst);
+}
+
+const _searchSongsByGenre = function (argus){
+  const unqInst = getUNQfy();
+  unqInst.getTracksMatchingGenres(argus[0]);
+  saveUNQfy(unqInst);
+}
+
+const _createPlaylist = function (argus){
+  const unqInst = getUNQfy();
+  unqInst.createPlaylist(argus[0],argus[1],argus[2])
+  saveUNQfy(unqInst);
 }
 
 const comandos = {
   addArtist  : _addArtist,
   addTrack : _addTrack,
-  addAlbum : _addAlbum//,
-//  removeArtist :removeArtist,
-//  removeTrack : removeTrack,
-//  removeAlbum : removeAlb,
-//  listArtist : ListArtist,
-//  listAlbum : ListAlbums,
-//  listTrack : ListSongs
+  addAlbum : _addAlbum,
+  removeArtist : _removeArtist,
+  removeAlbum : _removeAlbum,
+  removeTrack : _removeTrack,
+  searchSongByArtist : _searchSongsByArtist,
+  searchSongsByGenre : _searchSongsByGenre,
+  createPlaylist : _createPlaylist
+
 };
 
 // var argIndex = 0;
