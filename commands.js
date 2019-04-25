@@ -46,28 +46,28 @@ const _addTrack = function(argus){
     genre: argus.slice(3)
   }
 
-  getUNQfy().addTrack(argus[0],trackData)
+  unqInst.addTrack(argus[0],trackData)
   saveUNQfy(unqInst)
 }
 
 const _removeTrack = function(argus){
   const unqInst = getUNQfy();
   
-  getUNQfy().RemoveTrack(argus[0])
+  unqInst.RemoveTrack(argus[0])
   saveUNQfy(unqInst)
 }
 
 const _removeAlbum = function(argus){
   const unqInst = getUNQfy();
   
-  getUNQfy().RemoveAlbum(argus[0])
+  unqInst.RemoveAlbum(argus[0])
   saveUNQfy(unqInst)
 }
 
 const _removeArtist = function(argus){
   const unqInst = getUNQfy();
   
-  getUNQfy().RemoveArtist(argus[0])
+  unqInst.RemoveArtist(argus[0])
   saveUNQfy(unqInst)
 }
 
@@ -85,8 +85,39 @@ const _searchSongsByGenre = function (argus){
 
 const _createPlaylist = function (argus){
   const unqInst = getUNQfy();
-  unqInst.createPlaylist(argus[0],argus[1],argus[2])
+  unqInst.createPlaylist(argus[0],argus[1],argus.slice(2))
   saveUNQfy(unqInst);
+}
+
+const _getAllArtist = function(){
+  const unqInst = getUNQfy();
+  const artists = unqInst.getAllArtists();
+  artists.forEach ( x => console.log(x.name));
+}
+
+const _getAllArtistAlbums = function(argus){
+  const unqInst = getUNQfy();
+  const albums = unqInst.getAllAlbumsOfAnArtist(argus[0]);
+  albums.forEach ( x => console.log(x.name));
+}
+
+const _getAllAlbumTracks = function(argus){
+  const unqInst = getUNQfy();
+  const tracks = unqInst.getAllTracksOfAnAlbum(argus[0]);
+  tracks.forEach ( x => console.log(x.name));
+}
+
+const _searchByName = function(argus){
+  const unqInst = getUNQfy();
+  const elems  = unqInst.searchByName(argus[0]);
+  console.log("Artistas: " );
+  elems.artists.forEach (x => console.log(x));
+  console.log("Albumes: " );
+  elems.albums.forEach (x => console.log(x));
+  console.log("Tracks: " );
+  elems.tracks.forEach (x => console.log(x));
+  console.log("Artistas: " );
+  elems.playlists.forEach (x => console.log(x));
 }
 
 const comandos = {
@@ -96,8 +127,12 @@ const comandos = {
   removeArtist : _removeArtist,
   removeAlbum : _removeAlbum,
   removeTrack : _removeTrack,
-  searchSongByArtist : _searchSongsByArtist,
+  getAllArtist : _getAllArtist,
+  getAllArtistAlbums : _getAllArtistAlbums,
+  getAllAlbumTracks : _getAllAlbumTracks,
+  searchSongsByArtist : _searchSongsByArtist,
   searchSongsByGenre : _searchSongsByGenre,
+  searchByName : _searchByName,
   createPlaylist : _createPlaylist
 
 };
