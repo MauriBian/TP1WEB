@@ -88,7 +88,10 @@ class UNQfy {
   }
 
   RemoveArtist(id){
-    this.artists.pop(this.getArtistById(id))
+    let artist = this.getArtistById(id)
+    this.artists.pop(artist)
+    let tracks = this.getTracksMatchingArtist(artist.name)
+    tracks.foreach(elem => this.tracks.pop(elem))
   }
 
   RemoveAlbum(id){
