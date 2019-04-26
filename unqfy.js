@@ -135,7 +135,7 @@ class UNQfy {
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
     let artist =  this.artists.find(art => art.name === artistName)
-    return artist.albums.map(album => album.tracks).flat()
+    return artist.albums.map(album => album.tracks)
 
   }
 

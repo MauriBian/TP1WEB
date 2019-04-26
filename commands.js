@@ -73,13 +73,13 @@ const _removeArtist = function(argus){
 
 const _searchSongsByArtist = function (argus){
   const unqInst = getUNQfy();
-  unqInst.getTracksMatchingArtist(argus[0]);
+  unqInst.getTracksMatchingArtist(argus[0]).forEach ( x => console.log(x));
   saveUNQfy(unqInst);
 }
 
 const _searchSongsByGenre = function (argus){
   const unqInst = getUNQfy();
-  unqInst.getTracksMatchingGenres(argus[0]);
+  unqInst.getTracksMatchingGenres(argus).forEach ( x => console.log(x));
   saveUNQfy(unqInst);
 }
 
