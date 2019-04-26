@@ -109,19 +109,19 @@ class UNQfy {
 
 
   getArtistById(id) {
-    return this.artists.find(elem => elem.id === id)
+    return this.artists.find(elem => elem.id == id)
   }
 
   getAlbumById(id) {
-    return this.albums.find(elem => elem.id === id)
+    return this.albums.find(elem => elem.id == id)
   }
 
   getTrackById(id) {
-    return this.tracks.find(elem => elem.id === id)
+    return this.tracks.find(elem => elem.id == id)
   }
 
   getPlaylistById(id) {
-    return this.playLists.find(elem => elem.id === id)
+    return this.playLists.find(elem => elem.id == id)
   }
 
   // genres: array de generos(strings)
@@ -138,7 +138,7 @@ class UNQfy {
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
     let artist =  this.artists.find(art => art.name === artistName)
-    return artist.albums.map(album => album.tracks).flat()
+    return artist.albums.map(album => album.tracks)
 
   }
 
@@ -160,14 +160,13 @@ class UNQfy {
   }
 
   getAllAlbumsOfAnArtist(idArtista){
-
-   let artista =  getArtistById(idArtista)
+   let artista =  this.getArtistById(idArtista)
    return artista.albums
 
   }
 
   getAllTracksOfAnAlbum(idAlbum){
-    let album = getAlbumById(idAlbum)
+    let album = this.getAlbumById(idAlbum)
     return album.tracks
   }
 
@@ -175,7 +174,7 @@ class UNQfy {
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
   // retorna: la nueva playlist creada
-  createPlaylist(name, genresToInclude, maxDuration) {
+  createPlaylist(name, maxDuration, genresToInclude ) {
   /*** Crea una playlist y la agrega a unqfy. ***
     El objeto playlist creado debe soportar (al menos):
       * una propiedad name (string)

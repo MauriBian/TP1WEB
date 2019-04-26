@@ -11,7 +11,7 @@ class PlayListGenerator{
       }
     
       containsGen(track,genres){
-        return genres.some(elem => track.genres.includes(elem))
+        return genres.filter(elem => track.genres.includes(elem))
       }
 
       getTracksMatching(genres,duration,tracks){
