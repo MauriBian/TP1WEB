@@ -89,9 +89,12 @@ class UNQfy {
 
   RemoveArtist(id){
     let artist = this.getArtistById(id)
-    this.artists.pop(artist)
     let tracks = this.getTracksMatchingArtist(artist.name)
-    tracks.foreach(elem => this.tracks.pop(elem))
+
+    this.artists.pop(artist)
+
+  // tirar excepsion si no existe el artista
+
   }
 
   RemoveAlbum(id){
@@ -138,7 +141,7 @@ class UNQfy {
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistName) {
     let artist =  this.artists.find(art => art.name === artistName)
-    return artist.albums.map(album => album.tracks)
+    return artist.albums.map(album => album.tracks).flat()
 
   }
 
@@ -174,14 +177,13 @@ class UNQfy {
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
   // retorna: la nueva playlist creada
-  createPlaylist(name, maxDuration, genresToInclude ) {
+  createPlaylist(name, genresToInclude , maxDuration ) {
   /*** Crea una playlist y la agrega a unqfy. ***
     El objeto playlist creado debe soportar (al menos):
       * una propiedad name (string)
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-
       let newplayList =this.playListgenerator.CreatePlayList(this.lastId,name,genresToInclude,maxDuration)
       this.lastId+= 1
       this.playLists.push(newplayList)
