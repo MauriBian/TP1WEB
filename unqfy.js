@@ -77,7 +77,6 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
- 
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
     this.lastId += 1
     this.getAlbumById(albumId).tracks.push(track)
@@ -90,7 +89,19 @@ class UNQfy {
   RemoveArtist(id){
     let artist = this.getArtistById(id)
     let tracks = this.getTracksMatchingArtist(artist.id)
+ 
+    if (this.playLists.length > 0){
+      this.playLists.forEach(elem => elem.removeTracks(tracks))
+    }
 
+    if (tracks.length > 0){
+        tracks.forEach(elem => this.tracks.pop(elem))
+    }
+    if (artist.albums.length > 0){
+      artist.albums.forEach(elem => this.albums.pop(elem) )
+      console.log("entre aca")
+    }
+    
     this.artists.pop(artist)
 
   // tirar excepsion si no existe el artista
@@ -98,16 +109,37 @@ class UNQfy {
   }
 
   RemoveAlbum(id){
-    this.albums.pop(this.getArtistById(id))
+    let album = this.getAlbumById(id)
+    album.artist.albums.pop(album)
+
+    if (this.playLists.length > 0){
+      this.playLists.forEach(elem => elem.removeTracks(album.tracks))
+    }
+    if (album.tracks.length > 0){
+      album.tracks.forEach(elem => this.tracks.pop(elem))
+    }
+
+
+   
+    this.albums.pop(album)
+    
+
   }
 
   RemoveTrack(id){
-    this.tracks.pop(this.getArtistById(id))
+    let track = this.getTrackById(id)
+    let album = this.albums.find(elem => elem.tracks.includes(track))
+    if (this.playLists.length > 0){
+      this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} )
+    }
+    album.tracks.pop(track)
+    this.tracks.pop(track)
+
   }
 
 
   RemovePlayList(id){
-    this.playLists.pop(getArtistById(id))
+    this.playLists.pop(getPlaylistById(id))
   }
 
 
@@ -140,17 +172,9 @@ class UNQfy {
   // artistName: nombre de artista(string)
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistId) {
-    let artist =  this.getArtistById(artistId);
-    return this.flatear(artist.albums.map(album => album.tracks));
+    let artist =  this.getArtistById(artistId)
+    return artist.albums.map(album => album.tracks).flat()
 
-  }
-
-  flatear (lista){
-    var tempList  = []
-    lista.forEach( x => x.forEach(element => {
-      tempList.push(element)
-    }));
-    return tempList
   }
 
   searchByName(name){

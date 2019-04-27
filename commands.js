@@ -43,7 +43,7 @@ const _addTrack = function(argus){
   const trackData = {
     name : argus[1],
     duration: argus[2],
-    genre: argus.slice(3)
+    genres: argus.slice(3)
   }
 
   unqInst.addTrack(argus[0],trackData)
@@ -85,7 +85,7 @@ const _searchSongsByGenre = function (argus){
 
 const _createPlaylist = function (argus){
   const unqInst = getUNQfy();
-  unqInst.createPlaylist(argus[0],argus[1],argus.slice(2))
+  unqInst.createPlaylist(argus[0],argus.slice(2), argus[1])
   saveUNQfy(unqInst);
 }
 
@@ -116,7 +116,7 @@ const _searchByName = function(argus){
   elems.albums.forEach (x => console.log(x));
   console.log("Tracks: " );
   elems.tracks.forEach (x => console.log(x));
-  console.log("Artistas: " );
+  console.log("Playlist: " );
   elems.playlists.forEach (x => console.log(x));
 }
 
