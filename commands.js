@@ -120,6 +120,22 @@ const _searchByName = function(argus){
   elems.playlists.forEach (x => console.log(x));
 }
 
+const _help = function (argus){
+  console.log("- addArtist [nombre] [nacionalidad] :  Agrega un artista con su nombre y nacionalidad")
+  console.log("- addTrack [albumID] [nombreAlbum] [genero1] [genero2] [genero3] ...  : Agrega un track al album ")
+  console.log("- addAlbum [artist ID] [album Name] [album Year] : Agrega un album")
+  console.log ("- removeArtist [artistID] : borra el artista")
+  console.log ("- removeAlbum [albumID] : borra el Album")
+  console.log ("- removeTrack [trackID] : borra la cancion")
+  console.log("- getAllArtist : Lista todos los artistas")
+  console.log("- getAllArtistAlbums [artistID] : devuelte todos los albums del artista")
+  console.log("- searchSongsByArtist [artistID] : devuelve todas las canciones del artista")
+  console.log("- searchSongsByGenre [genero1] [genero2] ... : devuelte los tracks qeu sean de los generos mencionados")
+  console.log("- searchByName [name]: busca tracks, artistas, playlist y albums por el nombre")
+  console.log("- createPlaylist [name] [duration] [genero1] [genero2]..  : crea una playList en base a la duracionMAxima y generos elegidos")
+
+}
+
 const comandos = {
   addArtist  : _addArtist,
   addTrack : _addTrack,
@@ -133,29 +149,11 @@ const comandos = {
   searchSongsByArtist : _searchSongsByArtist,
   searchSongsByGenre : _searchSongsByGenre,
   searchByName : _searchByName,
-  createPlaylist : _createPlaylist
+  createPlaylist : _createPlaylist,
+  help : _help
 
 };
 
-// var argIndex = 0;
-// function executeIfExistsOld(argumList){
-//     argIndex ++
-
-//     if (argIndex != 3){
-//         return;
-//     }
-    
-//     if ( argIndex == 3  ){
-        
-//         if (comandos[argum] != undefined){
-            
-//             comandos[argum](argumList[3]);
-//         }else{
-//             console.log("No existe ese comando");
-//         } 
-//     }
-
-//   }
 
   function executeIfExists(argumList){
     const posibleComando = argumList[2];
