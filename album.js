@@ -1,4 +1,6 @@
 const Searchable = require ('./searchable.js');
+const errorsMod = require('./errors')
+const TrackAlreadyExistsError = errorsMod.TrackAlreadyExistsError
 
 class Album extends Searchable{
   constructor(_id, _name, _year, _artist){
@@ -42,16 +44,16 @@ class Album extends Searchable{
   }
 
   addTrackToAlbum(track){
-    if(! this.hasTrack(track.id)){
+    if(! this.hasTrack(track.name)){
       this.tracks.push(track);
     }
     else{
-      throw new Error("El track ya esta en el album");
+      throw new TrackAlreadyExistsError("El track ya existe en el album");
     }
   }
 
-  hasTrack(trackId){
-    return this.tracks.map((track)=>track.id).includes(trackId);
+  hasTrack(trackName){
+    return this.tracks.map((track)=>track.name).includes(trackName);
   }
 }
 

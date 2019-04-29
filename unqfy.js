@@ -1,6 +1,6 @@
 
-const picklify = require('picklify'); // para cargar/guarfar unqfy
-const fs = require('fs'); // para cargar/guarfar unqfy
+const picklify = require('picklify'); // para cargar/guardar unqfy
+const fs = require('fs'); // para cargar/guardar unqfy
 const artistMod = require('./artist')
 const Artist = artistMod.Artist
 const albumMod= require('./album')
@@ -11,6 +11,8 @@ const playListMod = require('./playlist')
 const PlayList = playListMod.Playlist
 const playListGeneratorMod = require('./playListGenerator')
 const PlayListGenerator = playListGeneratorMod.PlayListGenerator
+const errorsMod = require('./errors')
+const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
 
 class UNQfy {
   constructor() {
@@ -29,16 +31,29 @@ class UNQfy {
   /* Crea un artista y lo agrega a unqfy.El objeto artista creado debe soportar (al menos):
     - una propiedad name (string)
     - una propiedad country (string)
-  */
- 
-      let artist = new Artist(this.lastId,artistData.name,artistData.country,artistData.albums)
+  */ 
+    try{
+      return this.addArtistIfNotExist(artistData)
+    }
+    catch(exception){
+      console.log(exception.message)
+    }    
+  }
+
+  addArtistIfNotExist(artistData){
+    if(! this.containsArtist(artistData.name)){
+      let artist = new Artist(this.lastId,artistData.name,artistData.country)
       this.lastId += 1
       this.artists.push(artist)
       return artist
-    
+    }
+    else{
+      throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
+    }
+  }
 
- 
-  
+  containsArtist(artistName){
+    return this.artists.map(art => art.getName()).includes(artistName);
   }
 
 
@@ -56,7 +71,8 @@ class UNQfy {
       let artista =  this.getArtistById(artistId)
       let album = new Album(this.lastId,albumData.name,albumData.year,artista)
       this.lastId+= 1
-      artista.albums.push(album)
+      //artista.albums.push(album)
+      artista.addAlbum(album)
       this.albums.push(album)
       return album
     
@@ -79,67 +95,78 @@ class UNQfy {
   */
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
     this.lastId += 1
-    this.getAlbumById(albumId).tracks.push(track)
+    //this.getAlbumById(albumId).tracks.push(track)
+    this.getAlbumById(albumId).addTrack(track)
     this.tracks.push(track)
     return track
 
 
   }
 
-  RemoveArtist(id){
-    let artist = this.getArtistById(id)
-    let tracks = this.getTracksMatchingArtist(artist.id)
- 
-    if (this.playLists.length > 0){
-      this.playLists.forEach(elem => elem.removeTracks(tracks))
-    }
-
-    if (tracks.length > 0){
-        tracks.forEach(elem => this.tracks.pop(elem))
-    }
-    if (artist.albums.length > 0){
-      artist.albums.forEach(elem => this.albums.pop(elem) )
-      console.log("entre aca")
-    }
+  RemoveArtist(artistId){
     
-    this.artists.pop(artist)
+    let artist = this.getArtistById(artistId)
+    if (! artist === undefined){
+      let tracks = this.getTracksMatchingArtist(artist.id)
+      
+      if (this.playLists.length > 0){
+        this.playLists.forEach(elem => elem.removeTracks(tracks))
+      }
 
-  // tirar excepsion si no existe el artista
-
+      if (tracks.length > 0){
+          tracks.forEach(elem => this.tracks.pop(elem))
+      }
+      if (artist.albums.length > 0){
+        artist.albums.forEach(elem => this.albums.pop(elem) )
+      }
+      this.artists.pop(artist)
+      }
+    else{
+      throw new Error ("Error : El artista se que intenta borrar no existe")
+    }
   }
 
-  RemoveAlbum(id){
-    let album = this.getAlbumById(id)
-    album.artist.albums.pop(album)
-
-    if (this.playLists.length > 0){
-      this.playLists.forEach(elem => elem.removeTracks(album.tracks))
+  RemoveAlbum(albumId){
+    let album = this.getAlbumById(albumId)
+    if(! album === undefined){ 
+      album.artist.albums.pop(album)
+      if (this.playLists.length > 0){
+        this.playLists.forEach(elem => elem.removeTracks(album.tracks))
+      }
+      if (album.tracks.length > 0){
+        album.tracks.forEach(elem => this.tracks.pop(elem))
+      }
+      this.albums.pop(album)
     }
-    if (album.tracks.length > 0){
-      album.tracks.forEach(elem => this.tracks.pop(elem))
+    else{
+      throw new Error ("Error: El album que intenta borrar no existe")
     }
-
-
-   
-    this.albums.pop(album)
-    
-
   }
 
   RemoveTrack(id){
     let track = this.getTrackById(id)
-    let album = this.albums.find(elem => elem.tracks.includes(track))
-    if (this.playLists.length > 0){
-      this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} )
+    if (! track === undefined) {
+      let album = this.albums.find(elem => elem.tracks.includes(track))
+      if (this.playLists.length > 0){
+        this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} )
+      }
+      album.tracks.pop(track)
+      this.tracks.pop(track)
     }
-    album.tracks.pop(track)
-    this.tracks.pop(track)
-
+    else{
+      throw new Error ("Error: El artista que intenta borrar no existe")
+    }
   }
 
 
   RemovePlayList(id){
-    this.playLists.pop(getPlaylistById(id))
+    let playlist = this.getPlaylistById(id);
+    if (! playlist === undefined){
+    this.playLists.pop(this.getPlaylistById(id))
+    }
+    else{
+      throw new Error ("Error: La playlist que intenta borrar no existe")
+    }
   }
 
 
@@ -249,13 +276,7 @@ class UNQfy {
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy,
-  Artist,
-  Album,
-  Track,
-  PlayList,
-  PlayListGenerator
-
+  UNQfy
 };
 
 

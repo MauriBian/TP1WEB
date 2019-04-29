@@ -1,4 +1,6 @@
 const Searchable = require ('./searchable.js');
+const errorsMod = require('./errors');
+const AlbumAlreadyExistsError = errorsMod.AlbumAlreadyExistsError
 
 class Artist extends Searchable{
   constructor(_id, _name, _country, _albums = []){
@@ -33,16 +35,16 @@ class Artist extends Searchable{
   }
 
   addToAlbums(album){
-    if(! this.hasAlbum(album.id)){
+    if(! this.hasAlbum(album.name)){
       this.albums.push(album);
     }
     else{
-      throw new Error("El album ya se encuentra en la lista de albums del artista");
+      throw new AlbumAlreadyExistsError("El album ya se encuentra en la lista del artista");
     }
   }
 
-  hasAlbum(albumId){
-    return this.albums.map((album)=>album.id).includes(albumId);
+  hasAlbum(albumName){
+    return this.albums.map((album)=>album.name).includes(albumName);
   }
 }
 
