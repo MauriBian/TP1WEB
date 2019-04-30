@@ -33,19 +33,19 @@ class UNQfy {
     - una propiedad country (string)
   */ 
     try{
-      return this.addArtistIfNotExist(artistData)
+      return this.addArtistIfNotExist(artistData);
     }
     catch(exception){
-      console.log(exception.message)
+      console.log(exception.message);
     }    
   }
 
   addArtistIfNotExist(artistData){
     if(! this.containsArtist(artistData.name)){
-      let artist = new Artist(this.lastId,artistData.name,artistData.country)
-      this.lastId += 1
-      this.artists.push(artist)
-      return artist
+      let artist = new Artist(this.lastId,artistData.name,artistData.country);
+      this.lastId += 1;
+      this.artists.push(artist);
+      return artist;
     }
     else{
       throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
@@ -67,18 +67,13 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-
-      let artista =  this.getArtistById(artistId)
-      let album = new Album(this.lastId,albumData.name,albumData.year,artista)
-      this.lastId+= 1
-      //artista.albums.push(album)
-      artista.addAlbum(album)
-      this.albums.push(album)
-      return album
-    
-
-
-  }
+      let artista =  this.getArtistById(artistId);
+      let album = new Album(this.lastId,albumData.name,albumData.year,artista);
+      this.lastId+= 1;
+      artista.addAlbum(album);
+      this.albums.push(album);
+      return album;
+    }
 
 
   // trackData: objeto JS con los datos necesarios para crear un track
@@ -93,68 +88,64 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
-    let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres)
-    this.lastId += 1
-    //this.getAlbumById(albumId).tracks.push(track)
-    this.getAlbumById(albumId).addTrack(track)
-    this.tracks.push(track)
-    return track
-
-
+    let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres);
+    this.lastId += 1;
+    this.getAlbumById(albumId).addTrack(track);
+    this.tracks.push(track);
+    return track;
   }
 
   RemoveArtist(artistId){
-    
-    let artist = this.getArtistById(artistId)
+    let artist = this.getArtistById(artistId);
     if (! artist === undefined){
-      let tracks = this.getTracksMatchingArtist(artist.id)
+      let tracks = this.getTracksMatchingArtist(artist.id);
       
       if (this.playLists.length > 0){
-        this.playLists.forEach(elem => elem.removeTracks(tracks))
+        this.playLists.forEach(elem => elem.removeTracks(tracks));
       }
 
       if (tracks.length > 0){
-          tracks.forEach(elem => this.tracks.pop(elem))
+          tracks.forEach(elem => this.tracks.pop(elem));
       }
       if (artist.albums.length > 0){
-        artist.albums.forEach(elem => this.albums.pop(elem) )
+        artist.albums.forEach(elem => this.albums.pop(elem) );
       }
-      this.artists.pop(artist)
+      this.artists.pop(artist);
       }
     else{
-      throw new Error ("Error : El artista se que intenta borrar no existe")
+      throw new Error ("Error : El artista que intenta borrar no existe");
     }
   }
 
   RemoveAlbum(albumId){
-    let album = this.getAlbumById(albumId)
+    let album = this.getAlbumById(albumId);
     if(! album === undefined){ 
-      album.artist.albums.pop(album)
+      album.artist.albums.pop(album);
       if (this.playLists.length > 0){
-        this.playLists.forEach(elem => elem.removeTracks(album.tracks))
+        this.playLists.forEach(elem => elem.removeTracks(album.tracks));
       }
       if (album.tracks.length > 0){
-        album.tracks.forEach(elem => this.tracks.pop(elem))
+        album.tracks.forEach(elem => this.tracks.pop(elem));
       }
-      this.albums.pop(album)
+      this.albums.pop(album);
     }
     else{
-      throw new Error ("Error: El album que intenta borrar no existe")
+      throw new Error ("Error: El album que intenta borrar no existe");
     }
   }
 
   RemoveTrack(id){
-    let track = this.getTrackById(id)
+    let track = this.getTrackById(id);
     if (! track === undefined) {
-      let album = this.albums.find(elem => elem.tracks.includes(track))
+      let album = this.albums.find(elem => elem.tracks.includes(track));
       if (this.playLists.length > 0){
-        this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} )
+        this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} );
       }
-      album.tracks.pop(track)
-      this.tracks.pop(track)
+      album.tracks.pop(track);
+      this.tracks.pop(track);
     }
     else{
-      throw new Error ("Error: El artista que intenta borrar no existe")
+      throw new Error ("Error: El track que intenta borrar no existe");
     }
   }
 
@@ -162,28 +153,28 @@ class UNQfy {
   RemovePlayList(id){
     let playlist = this.getPlaylistById(id);
     if (! playlist === undefined){
-    this.playLists.pop(this.getPlaylistById(id))
+    this.playLists.pop(this.getPlaylistById(id));
     }
     else{
-      throw new Error ("Error: La playlist que intenta borrar no existe")
+      throw new Error ("Error: La playlist que intenta borrar no existe");
     }
   }
 
 
   getArtistById(id) {
-    return this.artists.find(elem => elem.id == id)
+    return this.artists.find(elem => elem.id == id);
   }
 
   getAlbumById(id) {
-    return this.albums.find(elem => elem.id == id)
+    return this.albums.find(elem => elem.id == id);
   }
 
   getTrackById(id) {
-    return this.tracks.find(elem => elem.id == id)
+    return this.tracks.find(elem => elem.id == id);
   }
 
   getPlaylistById(id) {
-    return this.playLists.find(elem => elem.id == id)
+    return this.playLists.find(elem => elem.id == id);
   }
 
   // genres: array de generos(strings)

@@ -33,12 +33,11 @@ class Playlist extends Searchable{
   }
 
   hasTrack(aTrack){
-   return  this.tracks.includes(aTrack)
+   return  this.tracks.includes(aTrack);
   }
 
   removeTracks(trackList){
-    
-    trackList.forEach(elem => {if (this.tracks.includes(elem)){this.tracks.pop(elem)}})
+    trackList.forEach(elem => {if (this.tracks.includes(elem)){this.tracks.pop(elem)}});
   }
 }
 
