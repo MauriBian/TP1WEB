@@ -5,32 +5,32 @@ Trabajo practico 1
 **UML UNQFY** : https://www.lucidchart.com/documents/edit/e5fda235-d92a-4766-96d9-e01e47e1d30a/0
 
 
-**Comandos de la consola : **
+**Comandos de la consola**
 
-  addArtist  : _addArtist,
+  * addArtist  : _addArtist,
   
-  addTrack : _addTrack,
+  * addTrack : _addTrack,
   
-  addAlbum : _addAlbum,
+  * addAlbum : _addAlbum,
   
-  removeArtist : _removeArtist,
+  * removeArtist : _removeArtist,
   
-  removeAlbum : _removeAlbum,
+  * removeAlbum : _removeAlbum,
   
-  removeTrack : _removeTrack,
+  * removeTrack : _removeTrack,
   
-  getAllArtist : _getAllArtist,
+  * getAllArtist : _getAllArtist,
   
-  getAllArtistAlbums : _getAllArtistAlbums,
+  * getAllArtistAlbums : _getAllArtistAlbums,
   
-  getAllAlbumTracks : _getAllAlbumTracks,
+  * getAllAlbumTracks : _getAllAlbumTracks,
   
-  searchSongsByArtist : _searchSongsByArtist,
+  * searchSongsByArtist : _searchSongsByArtist,
   
-  searchSongsByGenre : _searchSongsByGenre,
+  * searchSongsByGenre : _searchSongsByGenre,
   
-  searchByName : _searchByName,
+  * searchByName : _searchByName,
   
-  createPlaylist : _createPlaylist,
+  * createPlaylist : _createPlaylist,
   
-  help : _help
+  * createPlaylist : _createPlaylist,
