@@ -2,7 +2,7 @@
 Trabajo practico 1
 
 
-**UML UNQFY** : https://www.lucidchart.com/documents/edit/e5fda235-d92a-4766-96d9-e01e47e1d30a/0
+**UML UNQFY** : https://www.lucidchart.com/documents/view/e5fda235-d92a-4766-96d9-e01e47e1d30a/0
 
 
 **Comandos de la consola**
