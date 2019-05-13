@@ -35,15 +35,6 @@ class Album extends Searchable{
   }
 
   addTrack(track){
-    try{
-      this.addTrackToAlbum(track);
-    }
-    catch(exception){
-      console.log( exception.message);
-    }
-  }
-
-  addTrackToAlbum(track){
     if(! this.hasTrack(track.name)){
       this.tracks.push(track);
     }
@@ -54,6 +45,10 @@ class Album extends Searchable{
 
   hasTrack(trackName){
     return this.tracks.map((track)=>track.name).includes(trackName);
+  }
+
+  removeTrack(track){
+    this.tracks.pop(track);
   }
 }
 

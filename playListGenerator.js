@@ -2,9 +2,6 @@ const playListMod = require('./playlist.js')
 const PlayList = playListMod.Playlist
 
 class PlayListGenerator{
-  constructor(tracks) {
-    this.tracks= tracks;
-  }
     
   getTracksMatchingGenres(genres,tracks) {
     return tracks.filter(track => this.containsGen(track,genres));
@@ -15,10 +12,10 @@ class PlayListGenerator{
   }
 
   getTracksMatching(genres,duration,tracks){
-    return this.ReduceByTime(this.getTracksMatchingGenres(genres,tracks),duration);
+    return this.reduceByTime(this.getTracksMatchingGenres(genres,tracks),duration);
   }
 
-  ReduceByTime(tracks,duration){
+  reduceByTime(tracks,duration){
     let time = 0
     let newTracks = []
   
@@ -35,8 +32,8 @@ class PlayListGenerator{
       return newTracks;
     }
 
-  CreatePlayList(id,name, genresToInclude, maxDuration){
-    let playList = new PlayList(id,name,genresToInclude,maxDuration,this.getTracksMatching(genresToInclude,maxDuration,this.tracks))
+  createPlayList(id,name, genresToInclude, maxDuration, tracks){
+    let playList = new PlayList(id,name,genresToInclude,maxDuration,this.getTracksMatching(genresToInclude,maxDuration, tracks))
     return playList;
   }
 }
