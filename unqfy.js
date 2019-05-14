@@ -16,12 +16,10 @@ const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
 
 class UNQfy {
   constructor() {
-    this.artists = []
-    this.tracks = []
-    this.albums = []
-    this.playLists = []
-    this.playListgenerator = new PlayListGenerator(this.tracks)
-    this.lastId = 0
+    this.artists = [];
+    this.playLists = [];
+    this.playListgenerator = new PlayListGenerator();
+    this.lastId = 0;
   }
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -32,15 +30,6 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */ 
-    try{
-      return this.addArtistIfNotExist(artistData);
-    }
-    catch(exception){
-      console.log(exception.message);
-    }    
-  }
-
-  addArtistIfNotExist(artistData){
     if(! this.containsArtist(artistData.name)){
       let artist = new Artist(this.lastId,artistData.name,artistData.country);
       this.lastId += 1;
@@ -67,11 +56,10 @@ class UNQfy {
      - una propiedad name (string)
      - una propiedad year (number)
   */
-      let artista =  this.getArtistById(artistId);
-      let album = new Album(this.lastId,albumData.name,albumData.year,artista);
+      let artist =  this.getArtistById(artistId);
+      let album = new Album(this.lastId,albumData.name,albumData.year,artist);
       this.lastId+= 1;
-      artista.addAlbum(album);
-      this.albums.push(album);
+      artist.addAlbum(album);
       return album;
     }
 
@@ -88,11 +76,21 @@ class UNQfy {
       - una propiedad duration (number),
       - una propiedad genres (lista de strings)
   */
+    let albums = this.getAllAlbums();
+    let album =  albums.find(a=> a.getId() == albumId);
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres);
     this.lastId += 1;
-    this.getAlbumById(albumId).addTrack(track);
-    this.tracks.push(track);
+    album.addTrack( track)
     return track;
+  }
+
+
+  getAllAlbums(){
+    return this.artists.map(a => a.getAlbums()).flat();
+  }
+
+  getAllTracks(){
+    return this.getAllAlbums().map(a=> a.getTracks()).flat()  
   }
 
   RemoveArtist(artistId){
@@ -104,12 +102,6 @@ class UNQfy {
         this.playLists.forEach(elem => elem.removeTracks(tracks));
       }
 
-      if (tracks.length > 0){
-          tracks.forEach(elem => this.tracks.pop(elem));
-      }
-      if (artist.albums.length > 0){
-        artist.albums.forEach(elem => this.albums.pop(elem) );
-      }
       this.artists.pop(artist);
       }
     else{
@@ -120,14 +112,10 @@ class UNQfy {
   RemoveAlbum(albumId){
     let album = this.getAlbumById(albumId);
     if(! album === undefined){ 
-      album.artist.albums.pop(album);
+      album.artist.removeAlbum(album);
       if (this.playLists.length > 0){
         this.playLists.forEach(elem => elem.removeTracks(album.tracks));
       }
-      if (album.tracks.length > 0){
-        album.tracks.forEach(elem => this.tracks.pop(elem));
-      }
-      this.albums.pop(album);
     }
     else{
       throw new Error ("Error: El album que intenta borrar no existe");
@@ -137,12 +125,11 @@ class UNQfy {
   RemoveTrack(id){
     let track = this.getTrackById(id);
     if (! track === undefined) {
-      let album = this.albums.find(elem => elem.tracks.includes(track));
+      let album = this.getAllAlbums().find(elem => elem.tracks.includes(track));
       if (this.playLists.length > 0){
         this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} );
       }
-      album.tracks.pop(track);
-      this.tracks.pop(track);
+      album.removeTrack();
     }
     else{
       throw new Error ("Error: El track que intenta borrar no existe");
@@ -166,11 +153,11 @@ class UNQfy {
   }
 
   getAlbumById(id) {
-    return this.albums.find(elem => elem.id == id);
+    return this.getAllAlbums().find(elem => elem.id == id);
   }
 
   getTrackById(id) {
-    return this.tracks.find(elem => elem.id == id);
+    return this.getAllTracks().find(elem => elem.id == id);
   }
 
   getPlaylistById(id) {
@@ -180,7 +167,7 @@ class UNQfy {
   // genres: array de generos(strings)
   // retorna: los tracks que contenga alguno de los generos en el parametro genres
   getTracksMatchingGenres(genres) {
-    return this.playListgenerator.getTracksMatchingGenres(genres,this.tracks)
+    return this.playListgenerator.getTracksMatchingGenres(genres,this.getAllTracks())
   }
 
   containsGen(track,genres){
@@ -191,23 +178,19 @@ class UNQfy {
   // retorna: los tracks interpredatos por el artista con nombre artistName
   getTracksMatchingArtist(artistId) {
     let artist =  this.getArtistById(artistId)
-    return this.flatear(artist.albums.map(album => album.tracks));
+    return this.flat(artist.getAlbums().map(album => album.getTracks()));
 
   }
 
-  flatear (lista){
-    var tempList  = []
-    lista.forEach( x => x.forEach(element => {
-      tempList.push(element)
-    }));
-    return tempList
+  flat (list){
+    return list.reduce( (a, b) => a.concat(b));
   }
 
   searchByName(name){
 
     let artistfiltered = this.artists.filter(elem => elem.name.includes(name))
-    let albumfiltered = this.albums.filter(elem => elem.name.includes(name))
-    let trackfiltered = this.tracks.filter(elem => elem.name.includes(name))
+    let albumfiltered = this.getAllAlbums().filter(elem => elem.name.includes(name))
+    let trackfiltered = this.getAllTracks().filter(elem => elem.name.includes(name))
     let playListfiltered = this.playLists.filter(elem => elem.name.includes(name))
     return {artists : artistfiltered,
     albums : albumfiltered,
@@ -220,15 +203,15 @@ class UNQfy {
     return this.artists
   }
 
-  getAllAlbumsOfAnArtist(idArtista){
-   let artista =  this.getArtistById(idArtista)
-   return artista.albums
+  getAllAlbumsOfAnArtist(idArtist){
+   let artist =  this.getArtistById(idArtist)
+   return artist.getAlbums();
 
   }
 
   getAllTracksOfAnAlbum(idAlbum){
     let album = this.getAlbumById(idAlbum)
-    return album.tracks
+    return album.getTracks();
   }
 
   // name: nombre de la playlist
@@ -242,14 +225,10 @@ class UNQfy {
       * un metodo duration() que retorne la duración de la playlist.
       * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
   */
-      let newplayList =this.playListgenerator.CreatePlayList(this.lastId,name,genresToInclude,maxDuration)
+      let newplayList =this.playListgenerator.createPlayList(this.lastId,name,genresToInclude,maxDuration, this.getAllTracks())
       this.lastId+= 1
       this.playLists.push(newplayList)
-      return newplayList
-  
-   
-
-
+      return newplayList;
   }
 
   save(filename) {

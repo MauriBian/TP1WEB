@@ -26,15 +26,6 @@ class Artist extends Searchable{
   }
 
   addAlbum(album){
-    try{
-      this.addToAlbums(album);
-    }
-    catch(exception){
-      console.log( exception.message);
-    }
-  }
-
-  addToAlbums(album){
     if(! this.hasAlbum(album.name)){
       this.albums.push(album);
     }
@@ -45,6 +36,10 @@ class Artist extends Searchable{
 
   hasAlbum(albumName){
     return this.albums.map((album)=>album.name).includes(albumName);
+  }
+
+  removeAlbum(album){
+    this.albums.pop(album);
   }
 }
 
