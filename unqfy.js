@@ -86,11 +86,11 @@ class UNQfy {
 
 
   getAllAlbums(){
-    return this.artists.map(a => a.getAlbums()).flat();
+    return this.flat(this.artists.map(a => a.getAlbums()));
   }
 
   getAllTracks(){
-    return this.getAllAlbums().map(a=> a.getTracks()).flat()  
+    return this.flat(this.getAllAlbums().map(a=> a.getTracks()));
   }
 
   RemoveArtist(artistId){
