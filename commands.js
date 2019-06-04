@@ -107,6 +107,14 @@ const _getAllAlbumTracks = function(argus){
   tracks.forEach ( x => console.log(x.name));
 }
 
+const _getAlbumsForArtist = function (artistName){
+
+}
+
+const _populateAlbumsForArtist = function (artistName){
+
+}
+
 const _searchByName = function(argus){
   const unqInst = getUNQfy();
   const elems  = unqInst.searchByName(argus[0]);
@@ -133,7 +141,8 @@ const _help = function (argus){
   console.log("- searchSongsByGenre [genero1] [genero2] ... : devuelve los tracks que sean de los generos mencionados")
   console.log("- searchByName [name]: busca tracks, artistas, playlist y albums por el nombre")
   console.log("- createPlaylist [name] [duration] [genero1] [genero2]..  : crea una playList en base a la duracionMaxima y generos elegidos")
-
+  console.log("- getAlbumsForArtist [artistName] : devuelve todos los albums de un artista dado")
+  console.log ("- populateAlbumsForArtist [artistName] consulta a Spotify los albums del artista y los devuelve ")
 }
 
 const comandos = {
@@ -150,6 +159,8 @@ const comandos = {
   searchSongsByGenre : _searchSongsByGenre,
   searchByName : _searchByName,
   createPlaylist : _createPlaylist,
+  getAlbumsForArtist : _getAlbumsForArtist,
+  populateAlbumsForArtist : _populateAlbumsForArtist,
   help : _help
 
 };
