@@ -13,6 +13,7 @@ const playListGeneratorMod = require('./playListGenerator')
 const PlayListGenerator = playListGeneratorMod.PlayListGenerator
 const errorsMod = require('./errors')
 const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
+const ArtistNotFound = errorsMod.ArtistNotFound
 
 class UNQfy {
   constructor() {
@@ -198,6 +199,9 @@ class UNQfy {
     playlists : playListfiltered}
 
   }
+  getArtistByName(artistName){
+    return this.artists.find(elem => elem.name = artistName)
+  }  
 
   getAllArtists(){
     return this.artists
@@ -212,6 +216,26 @@ class UNQfy {
   getAllTracksOfAnAlbum(idAlbum){
     let album = this.getAlbumById(idAlbum)
     return album.getTracks();
+  }
+
+  getAlbumsForArtist(artistName){
+    if (this.artists.find(elem => elem.name == artistName) != null){
+      let albumsArtist = this.artists.find(elem => elem.name == artistName).albums
+      let albums = albumsArtist.map(elem => this.createObjectOnlyWithName(elem.name) )
+      return albums
+    }
+    else{
+      throw new ArtistNotFound
+    }
+  
+
+    
+
+    
+  }
+
+  createObjectOnlyWithName(albumName){
+    return {name : albumName}
   }
 
   // name: nombre de la playlist
@@ -248,8 +272,6 @@ class UNQfy {
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
-
-
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
