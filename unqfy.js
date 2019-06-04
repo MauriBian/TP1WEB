@@ -221,7 +221,7 @@ class UNQfy {
   getAlbumsForArtist(artistName){
     if (this.artists.find(elem => elem.name == artistName) != null){
       let albumsArtist = this.artists.find(elem => elem.name == artistName).albums
-      let albums = albumsArtist.map(elem => this.createObjectOnlyWithName(elem.name) )
+      let albums = albumsArtist.map(elem => this.createObject(elem) )
       return albums
     }
     else{
@@ -234,9 +234,11 @@ class UNQfy {
     
   }
 
-  createObjectOnlyWithName(albumName){
-    return {name : albumName}
-  }
+  createObject(album){
+    return {name : album.name,
+            year : album.year,
+            track : album.tracks}
+  }         
 
   // name: nombre de la playlist
   // genresToInclude: array de generos
