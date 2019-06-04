@@ -13,6 +13,7 @@ const playListGeneratorMod = require('./playListGenerator')
 const PlayListGenerator = playListGeneratorMod.PlayListGenerator
 const errorsMod = require('./errors')
 const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
+const ArtistNotFound = errorsMod.ArtistNotFound
 
 class UNQfy {
   constructor() {
@@ -215,12 +216,23 @@ class UNQfy {
   }
 
   getAlbumsForArtist(artistName){
-    let albumsArtist = (this.artist.find(artist => artist.name == artistName)).albums
-    let albums = albumsArtist.map(elem => {name : elem.name})
-
-    return albums
+    if (this.artists.find(elem => elem.name == artistName) != null){
+      let albumsArtist = this.artists.find(elem => elem.name == artistName).albums
+      let albums = albumsArtist.map(elem => this.createObjectOnlyWithName(elem.name) )
+      return albums
+    }
+    else{
+      throw new ArtistNotFound
+    }
+  
 
     
+
+    
+  }
+
+  createObjectOnlyWithName(albumName){
+    return {name : albumName}
   }
 
   // name: nombre de la playlist

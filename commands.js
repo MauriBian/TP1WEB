@@ -108,7 +108,16 @@ const _getAllAlbumTracks = function(argus){
 }
 
 const _getAlbumsForArtist = function (artistName){
+  try{
+    const unqInst = getUNQfy();
+    const albums = unqInst.getAlbumsForArtist(artistName)
+    console.log(albums)
+  }
+  catch(error){
+    console.log(error.name)
+  }
 
+  
 }
 
 const _populateAlbumsForArtist = function (artistName){
