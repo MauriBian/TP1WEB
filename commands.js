@@ -1,7 +1,8 @@
 const m = require('./main')
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
-
+const spotifyClient = require('./spotifyClient');
+const spotifyInstance = new spotifyClient.SpotifyClient();
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
   let unqfy = new unqmod.UNQfy();
@@ -112,7 +113,11 @@ const _getAlbumsForArtist = function (artistName){
 }
 
 const _populateAlbumsForArtist = function (artistName){
-
+  let id = 
+   spotifyInstance.getArtistAlbums(artistName).then ( resp => 
+      resp.items.forEach( album =>  _addAlbum(album.name, album.release_date.substring(0,4))
+    
+    ))
 }
 
 const _searchByName = function(argus){
