@@ -200,7 +200,7 @@ class UNQfy {
 
   }
   getArtistByName(artistName){
-    return this.artists.find(elem => elem.name = artistName)
+    return this.artists.find(elem => elem.name == artistName)
   }  
 
   getAllArtists(){

@@ -1,7 +1,8 @@
 const m = require('./main')
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
-
+const spotifyClient = require('./spotifyClient');
+const spotifyInstance = new spotifyClient.SpotifyClient();
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
   let unqfy = new unqmod.UNQfy();
@@ -83,6 +84,11 @@ const _searchSongsByGenre = function (argus){
   saveUNQfy(unqInst);
 }
 
+const searchArtistByName = function(artistName){
+  const unqInst = getUNQfy();
+  return unqInst.getArtistByName(artistName);
+}
+
 const _createPlaylist = function (argus){
   const unqInst = getUNQfy();
   unqInst.createPlaylist(argus[0],argus.slice(2), argus[1])
@@ -121,7 +127,25 @@ const _getAlbumsForArtist = function (artistName){
 }
 
 const _populateAlbumsForArtist = function (artistName){
+  try {
+    let id = searchArtistByName(artistName).id;
+  }catch(e){
+    console.log("NO existe el artista en la BD");
+  }
 
+ 
+   spotifyInstance.getArtistAlbums(artistName)
+   .then ( resp => resp.items)
+   .then ( items => {
+      items.forEach( album => { 
+        _addAlbum([id,album.name, album.release_date.substring(0,4)])
+       console.log("Album agregado: " + album.name);
+      });
+   } )
+   .catch(error =>  {
+     console.log(error.name)
+   })
+  
 }
 
 const _searchByName = function(argus){
