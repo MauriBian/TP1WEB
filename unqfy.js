@@ -214,6 +214,15 @@ class UNQfy {
     return album.getTracks();
   }
 
+  getAlbumsForArtist(artistName){
+    let albumsArtist = (this.artist.find(artist => artist.name == artistName)).albums
+    let albums = albumsArtist.map(elem => {name : elem.name})
+
+    return albums
+
+    
+  }
+
   // name: nombre de la playlist
   // genresToInclude: array de generos
   // maxDuration: duración en segundos
@@ -248,8 +257,6 @@ class UNQfy {
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
-
-
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
