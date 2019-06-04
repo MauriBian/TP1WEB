@@ -85,6 +85,11 @@ const _searchSongsByGenre = function (argus){
   saveUNQfy(unqInst);
 }
 
+const searchArtistByName = function(artistName){
+  const unqInst = getUNQfy();
+  return unqInst.getArtistByName(artistName);
+}
+
 const _createPlaylist = function (argus){
   const unqInst = getUNQfy();
   unqInst.createPlaylist(argus[0],argus.slice(2), argus[1])
@@ -123,11 +128,25 @@ const _getAlbumsForArtist = function (artistName){
 }
 
 const _populateAlbumsForArtist = function (artistName){
-  let id = 
-   spotifyInstance.getArtistAlbums(artistName).then ( resp => 
-      resp.items.forEach( album =>  _addAlbum(album.name, album.release_date.substring(0,4))
-    
-    ))
+  try {
+    let id = searchArtistByName(artistName).id;
+  }catch(e){
+    console.log("NO existe el artista en la BD");
+  }
+
+ 
+   spotifyInstance.getArtistAlbums(artistName)
+   .then ( resp => resp.items)
+   .then ( items => {
+      items.forEach( album => { 
+        _addAlbum([id,album.name, album.release_date.substring(0,4)])
+       console.log("Album agregado: " + album.name);
+      });
+   } )
+   .catch(error =>  {
+     console.log(error.name)
+   })
+  
 }
 
 const _searchByName = function(argus){
