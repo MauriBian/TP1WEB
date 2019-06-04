@@ -23,8 +23,9 @@ const _addArtist = function(argus){
     name : argus[0],
     country: argus[1]
   }
-  unqInst.addArtist(artistData)
+  let artist = unqInst.addArtist(artistData)
   saveUNQfy(unqInst)
+  return artist
 }
 
 const _addAlbum = function(argus){
@@ -191,7 +192,8 @@ const comandos = {
 
 
 module.exports = {
-    executeIfExists
+    executeIfExists,
+    _addArtist
   };
 
 

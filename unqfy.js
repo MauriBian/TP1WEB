@@ -199,6 +199,9 @@ class UNQfy {
     playlists : playListfiltered}
 
   }
+  getArtistByName(artistName){
+    return this.artists.find(elem => elem.name = artistName)
+  }  
 
   getAllArtists(){
     return this.artists
