@@ -15,18 +15,24 @@ app.use(errorHandler);
 
 
 router.post("/artists",(req,res,next) => {
-if (!unqController.containsArtist(req.body)){
-    let artist = unqController.addArtist(req.body)
-    res.status(201)
-    res.json({
-        "id" : artist.id,
-        "name" : artist.name,
-        "albums" : artist.albums,
-        "country" : artist.country})
+if (req.params.name != undefined && req.params.country != undefined)   {
+    if (!unqController.containsArtist(req.body)){
+        let artist = unqController.addArtist(req.body)
+        res.status(201)
+        res.json({
+            "id" : artist.id,
+            "name" : artist.name,
+            "albums" : artist.albums,
+            "country" : artist.country})
+        }
+    else {
+        next(new ArtistAlreadyExistsError())
     }
-else {
-    next(new ArtistAlreadyExistsError())
-}})
+}
+else{
+    next(new SyntaxError())
+} 
+})
  
 
 router.get("/artists/:id",(req,res,next) => {
@@ -43,7 +49,13 @@ router.get("/artists/:id",(req,res,next) => {
 router.put("/artists/:id",(req,res,next) => {
     if (unqController.getArtistById(req.params.id)){
         res.status(200)
-        res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
+        if (req.body.name != undefined && req.body.country != undefined){
+            res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
+        }
+        else{
+            next(new SyntaxError())
+        }
+        
     }
     else{
         next(new ArtistNotFound())
@@ -83,9 +95,24 @@ function errorHandler(err,req,res,next){
         res.status(404)
         res.json({
             status : 404,
-            errorCode : "RELATED_RESOURCE_NOT_FOUND"})
+            errorCode : "RESOURCE_NOT_FOUND"})
+    }
+    if (err instanceof SyntaxError){
+        res.status(400)
+        res.json({
+            status : 400,
+            errorCode : "BAD_REQUEST"
+        })
     }
 
+    if (err instanceof Error){
+        res.status(500)
+        res.json({
+            status : 500,
+            errorCode : "INTERNAL_SERVER_ERROR"
+        })
+    }    
+    
     else{
         next()
     }
