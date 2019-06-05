@@ -21,7 +21,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 const _addArtist = function(argus){
   const unqInst = getUNQfy();
   const artistData = {
-    name : argus[0],
+    name : parseName(argus[0]),
     country: argus[1]
   }
   unqInst.addArtist(artistData)
@@ -31,7 +31,7 @@ const _addArtist = function(argus){
 const _addAlbum = function(argus){
   const unqInst = getUNQfy();
   const albumData = {
-    name : argus[1],
+    name : parseName(argus[1]),
     year: argus[2]
   }
 
@@ -42,7 +42,7 @@ const _addAlbum = function(argus){
 const _addTrack = function(argus){
   const unqInst = getUNQfy();
   const trackData = {
-    name : argus[1],
+    name : parseName(argus[1]),
     duration: argus[2],
     genres: argus.slice(3)
   }
@@ -86,7 +86,7 @@ const _searchSongsByGenre = function (argus){
 
 const searchArtistByName = function(artistName){
   const unqInst = getUNQfy();
-  return unqInst.getArtistByName(artistName);
+  return unqInst.getArtistByName(parseName(artistName));
 }
 
 const _createPlaylist = function (argus){
@@ -116,7 +116,7 @@ const _getAllAlbumTracks = function(argus){
 const _getAlbumsForArtist = function (artistName){
   try{
     const unqInst = getUNQfy();
-    const albums = unqInst.getAlbumsForArtist(artistName)
+    const albums = unqInst.getAlbumsForArtist(parseName(artistName))
     console.log(albums)
   }
   catch(error){
@@ -127,14 +127,16 @@ const _getAlbumsForArtist = function (artistName){
 }
 
 const _populateAlbumsForArtist = function (artistName){
+
+  let name = parseName(artistName.toString());
   try {
-    let id = searchArtistByName(artistName).id;
+    let id = searchArtistByName(name).id;
   }catch(e){
     console.log("NO existe el artista en la BD");
   }
 
  
-   spotifyInstance.getArtistAlbums(artistName)
+   spotifyInstance.getArtistAlbums(name)
    .then ( resp => resp.items)
    .then ( items => {
       items.forEach( album => { 
@@ -197,6 +199,10 @@ const comandos = {
   help : _help
 
 };
+
+  function parseName(name){
+      return name.replace("_"," ");
+  }
 
 
   function executeIfExists(argumList){
