@@ -31,22 +31,52 @@ const parseAlbumsArtist = function(artistObj){
 }
 
 const updateArtist = function(id,artistObj){
-  console.log(artistObj)
   let unq = getUNQfy()
   let artist = getArtistById(id)
   let newArtist = artist
   newArtist.name = artistObj.name
   newArtist.country = artistObj.country
   unq.RemoveArtist(id)
-  unq.addArtist(newArtist)
+  unq.addArtistWithID(newArtist,id)
   saveUNQfy(unq)
   return parseAlbumsArtist(newArtist)
 
+}
+
+const RemoveArtist = function(id){
+  let unq= getUNQfy()
+  unq.RemoveArtist(id)
+  saveUNQfy(unq)
+}
+
+const getArtistByName= function(name){
+  let unq = getUNQfy()
+  return parseArtist(unq.getArtistsByName(name))
+}
+
+function parseArtist(list){
+  return list.map(elem => ArtistToObject(elem))
+}
+
+function ArtistToObject(artist){
+  return {
+    id : artist.id,
+    name: artist.name,
+    albums : artist.albums,
+    country : artist.country
+  }
+}
+
+function containsArtist(artist){
+  return getUNQfy().getArtistByName(artist)
 }
 
 module.exports = {
     addArtist,
     getArtistById,
     parseAlbumsArtist,
-    updateArtist
+    updateArtist,
+    RemoveArtist,
+    getArtistByName,
+    containsArtist
 }

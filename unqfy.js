@@ -26,7 +26,7 @@ class UNQfy {
   //   artistData.name (string)
   //   artistData.country (string)
   // retorna: el nuevo artista creado
-  addArtist(artistData) {
+  addArtist(artistData, id= 1) {
   /* Crea un artista y lo agrega a unqfy.El objeto artista creado debe soportar (al menos):
     - una propiedad name (string)
     - una propiedad country (string)
@@ -41,6 +41,19 @@ class UNQfy {
       throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
     }
   }
+  
+  addArtistWithID(artistData,id){
+    
+    if(! this.containsArtist(artistData.name)){
+      let artist = new Artist(id,artistData.name,artistData.country);
+      this.artists.push(artist);
+      return artist;
+    }
+    else{
+      throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
+    }
+  }
+  
 
   containsArtist(artistName){
     return this.artists.map(art => art.getName()).includes(artistName);
@@ -212,6 +225,11 @@ class UNQfy {
     playlists : playListfiltered}
 
   }
+
+  getArtistsByName(name){
+    return this.artists.filter(elem => elem.name.toLowerCase().includes(name))
+  }
+
   getArtistByName(artistName){
     return this.artists.find(elem => elem.name == artistName)
   }  

@@ -25,15 +25,18 @@ class TrackAlreadyExistsError extends Error{
 class ArtistNotFound extends Error{
     constructor(message){
         super(message);
-        this.name = "ArtistNotFound"
+        this.name = "Artist Not Found"
     }
 }
+
+
 
 module.exports = {
     ArtistAlreadyExistsError : ArtistAlreadyExistsError,
     AlbumAlreadyExistsError : AlbumAlreadyExistsError,
     TrackAlreadyExistsError : TrackAlreadyExistsError,
-    ArtistNotFound : ArtistNotFound
+    ArtistNotFound : ArtistNotFound,
+
 
 };
 
