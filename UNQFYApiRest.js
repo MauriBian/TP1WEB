@@ -20,11 +20,7 @@ res.json({
 })})
 
 router.get("/artists",(req,res) => {res.status(200)
-    console.log(unqController.getArtistById(req.query.id))
 res.json(unqController.parseArtist(unqController.getArtistById(req.query.id)))})
-
-
-
 
 
 app.listen(port);
