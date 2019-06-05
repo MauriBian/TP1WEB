@@ -96,20 +96,27 @@ class UNQfy {
 
   RemoveArtist(artistId){
     let artist = this.getArtistById(artistId);
-    if (! artist === undefined){
-      let tracks = this.getTracksMatchingArtist(artist.id);
-      
+
+    if (artist != undefined){
+
+      let tracks = this.getTracksMatchingArtist(artistId)  
       if (this.playLists.length > 0){
         this.playLists.forEach(elem => elem.removeTracks(tracks));
       }
+      
+      this.artists = this.removeElement(artistId,this.artists)
+      
+    }
 
-      this.artists.pop(artist);
-      }
-    else{
+     else{
       throw new Error ("Error : El artista que intenta borrar no existe");
     }
   }
 
+  removeElement(id,list){
+    return list.filter(elem => elem.id != id)
+  }
+  
   RemoveAlbum(albumId){
     let album = this.getAlbumById(albumId);
     if(! album === undefined){ 
@@ -184,7 +191,13 @@ class UNQfy {
   }
 
   flat (list){
-    return list.reduce( (a, b) => a.concat(b));
+    if (list.length>0){
+      return list.reduce( (a, b) => a.concat(b));
+    }
+    else{
+      return []
+    }
+  
   }
 
   searchByName(name){

@@ -3,7 +3,7 @@ const app = express()
 const unqController = require('./UNQFYController')
 
 const bodyParser = require('body-parser')
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 const router = express.Router();
 
 app.use(bodyParser.urlencoded({extended : true}))
@@ -15,12 +15,17 @@ res.status(201)
 res.json({
     "id" : artist.id,
     "name" : artist.name,
+    "albums" : artist.albums,
     "country" : artist.country,
-    "albums" : artist.albums
+    
 })})
 
-router.get("/artists",(req,res) => {res.status(200)
-res.json(unqController.parseArtist(unqController.getArtistById(req.query.id)))})
+router.get("/artists/:id",(req,res) => {res.status(200)
+res.json(unqController.parseAlbumsArtist(unqController.getArtistById(req.params.id)))})
+
+
+router.put("/artists/:id",(req,res) => {res.status(200)
+res.json(unqController.updateArtist(req.params.id,req.body))})
 
 
 app.listen(port);
