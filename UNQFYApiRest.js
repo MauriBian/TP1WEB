@@ -11,11 +11,11 @@ const router = express.Router();
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 app.use('/api', router);
-app.use(errorHandler); 
+
 
 
 router.post("/artists",(req,res,next) => {
-if (req.params.name != undefined && req.params.country != undefined)   {
+if (req.body.name != undefined && req.body.country != undefined)   {
     if (!unqController.containsArtist(req.body)){
         let artist = unqController.addArtist(req.body)
         res.status(201)
@@ -65,6 +65,7 @@ router.put("/artists/:id",(req,res,next) => {
 router.delete("/artists/:id",(req,res,next) => {res.status(204)
     if (unqController.getArtistById(req.params.id)){
     unqController.RemoveArtist(req.params.id)
+    res.send("Artista Eliminado")
     }
     else{
         next(new ArtistNotFound())
@@ -104,20 +105,13 @@ function errorHandler(err,req,res,next){
             errorCode : "BAD_REQUEST"
         })
     }
-
-    if (err instanceof Error){
-        res.status(500)
-        res.json({
-            status : 500,
-            errorCode : "INTERNAL_SERVER_ERROR"
-        })
-    }    
+  
     
     else{
         next()
     }
     
 }
-
+app.use(errorHandler); 
 app.listen(port);
 console.log('Api Ready! ' + port);
