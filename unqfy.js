@@ -11,8 +11,11 @@ const playListMod = require('./playlist')
 const PlayList = playListMod.Playlist
 const playListGeneratorMod = require('./playListGenerator')
 const PlayListGenerator = playListGeneratorMod.PlayListGenerator
+const MusixMatchClientMod = require('./musixmatchClient')
+const MusixMatchClient = MusixMatchClientMod.MusixMatchClient
 const errorsMod = require('./errors')
-const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
+const ElementAlreadyExistsError = errorsMod.ElementAlreadyExistsError
+const ElementDoesntExistsError = errorsMod.ElementDoesntExistsError
 const ArtistNotFound = errorsMod.ArtistNotFound
 
 class UNQfy {
@@ -38,7 +41,7 @@ class UNQfy {
       return artist;
     }
     else{
-      throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
+      throw new ElementAlreadyExistsError("El/La artista "+artistData.name+ " ya se encuentra en el sistema");
     }
   }
   
@@ -50,7 +53,7 @@ class UNQfy {
       return artist;
     }
     else{
-      throw new ArtistAlreadyExistsError("Error: El/La artista "+artistData.name+ " ya se encuentra en el sistema");
+      throw new ElementAlreadyExistsError("El/La artista "+artistData.name+ " ya se encuentra en el sistema");
     }
   }
   
@@ -122,7 +125,7 @@ class UNQfy {
     }
 
      else{
-      throw new Error ("Error : El artista que intenta borrar no existe");
+      throw new ElementDoesntExistsError ("Error : El artista que intenta borrar no existe");
     }
   }
 
@@ -139,7 +142,7 @@ class UNQfy {
       }
     }
     else{
-      throw new Error ("Error: El album que intenta borrar no existe");
+      throw new ElementDoesntExistsError ("Error: El album que intenta borrar no existe");
     }
   }
 
@@ -153,7 +156,7 @@ class UNQfy {
       album.removeTrack();
     }
     else{
-      throw new Error ("Error: El track que intenta borrar no existe");
+      throw new ElementDoesntExistsError ("Error: El track que intenta borrar no existe");
     }
   }
 
@@ -164,7 +167,7 @@ class UNQfy {
     this.playLists.pop(this.getPlaylistById(id));
     }
     else{
-      throw new Error ("Error: La playlist que intenta borrar no existe");
+      throw new ElementDoesntExistsError ("Error: La playlist que intenta borrar no existe");
     }
   }
 
@@ -256,7 +259,7 @@ class UNQfy {
       return albums
     }
     else{
-      throw new ArtistNotFound
+      throw new ArtistNotFound()
     }
   
 
@@ -301,7 +304,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy,Artist,Album,Track,PlayListGenerator,PlayList];
+    const classes = [UNQfy,Artist,Album,Track,PlayListGenerator,PlayList, MusixMatchClient];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }

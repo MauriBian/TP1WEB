@@ -1,19 +1,17 @@
 
-class ArtistAlreadyExistsError extends Error{
+class ElementAlreadyExistsError extends Error{
     constructor(message){
         super(message);
-        this.name = "ArtistAlreadyExistsError";
+        this.name = "ElementAlreadyExistsError";
     }
 }
 
-
-class AlbumAlreadyExistsError extends Error{
+class ElementDoesntExistsError extends Error{
     constructor(message){
         super(message);
-        this.name = "AlbumAlreadyExistsError";
+        this.name = "ElementDoesntExistsError";
     }
 }
-
 
 class TrackAlreadyExistsError extends Error{
     constructor(message){
@@ -32,9 +30,9 @@ class ArtistNotFound extends Error{
 
 
 module.exports = {
-    ArtistAlreadyExistsError : ArtistAlreadyExistsError,
-    AlbumAlreadyExistsError : AlbumAlreadyExistsError,
-    TrackAlreadyExistsError : TrackAlreadyExistsError,
+    ElementAlreadyExistsError : ElementAlreadyExistsError,
+    ElementDoesntExistsError : ElementDoesntExistsError,
+    TrackAlreadyExistsError : TrackAlreadyExistsError, //sacar despues de subir lo nuevo de track
     ArtistNotFound : ArtistNotFound,
 
 

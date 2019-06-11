@@ -24,8 +24,13 @@ const _addArtist = function(argus){
     name : parseName(argus[0]),
     country: argus[1]
   }
+  try {
   unqInst.addArtist(artistData)
   saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
 }
 
 const _addAlbum = function(argus){
@@ -34,9 +39,13 @@ const _addAlbum = function(argus){
     name : parseName(argus[1]),
     year: argus[2]
   }
-
+  try{
   unqInst.addAlbum(argus[0],albumData)
   saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
 }
 
 const _addTrack = function(argus){
@@ -46,30 +55,50 @@ const _addTrack = function(argus){
     duration: argus[2],
     genres: argus.slice(3)
   }
-
+  try{
   unqInst.addTrack(argus[0],trackData)
   saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
 }
 
 const _removeTrack = function(argus){
   const unqInst = getUNQfy();
   
-  unqInst.RemoveTrack(argus[0])
-  saveUNQfy(unqInst)
+  try{
+    unqInst.RemoveTrack(argus[0])
+    saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
+
 }
 
 const _removeAlbum = function(argus){
   const unqInst = getUNQfy();
   
-  unqInst.RemoveAlbum(argus[0])
-  saveUNQfy(unqInst)
+  try{
+    unqInst.RemoveAlbum(argus[0])
+    saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
 }
 
 const _removeArtist = function(argus){
   const unqInst = getUNQfy();
   
+  try{
   unqInst.RemoveArtist(argus[0])
   saveUNQfy(unqInst)
+  }
+  catch(error){
+    console.log(error.message)
+  }
 }
 
 const _searchSongsByArtist = function (argus){
