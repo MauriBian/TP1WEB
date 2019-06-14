@@ -241,6 +241,22 @@ class UNQfy {
     return this.artists
   }
 
+  containsArtistById(id){
+    return this.artists.some(elem => elem.id == id)
+  }
+
+  containsArtistByName(name){
+    return this.artists.some(elem => elem.name == name)
+  }
+
+  containsAlbumById(id){
+    return this.getAllAlbums().some(elem => elem.id == id)
+  }
+
+  containsAlbumByName(name){
+    return this.getAllAlbums().some(elem => elem.name == name)
+  }
+
   getAllAlbumsOfAnArtist(idArtist){
    let artist =  this.getArtistById(idArtist)
    return artist.getAlbums();
@@ -253,9 +269,9 @@ class UNQfy {
   }
 
   getAlbumsForArtist(artistName){
-    if (this.artists.find(elem => elem.name == artistName) != null){
-      let albumsArtist = this.artists.find(elem => elem.name == artistName).albums
-      let albums = albumsArtist.map(elem => this.createObject(elem) )
+    if (this.getArtistByName(artistName) != null){
+      let albumsArtist = this.getArtistByName(artistName).albums
+      let albums = albumsArtist.map(elem => this.AlbumWithoutArtist(elem) )
       return albums
     }
     else{
@@ -268,7 +284,7 @@ class UNQfy {
     
   }
 
-  createObject(album){
+  AlbumWithoutArtist(album){
     return {name : album.name,
             year : album.year,
             track : album.tracks}

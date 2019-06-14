@@ -13,7 +13,7 @@ function getUNQfy(filename = 'data.json') {
     unqfy.save(filename);
   }
 
-const addArtist = function(artistJson){
+function addArtist(artistJson){
     let unq = getUNQfy()
     let artist = unq.addArtist(artistJson)
     saveUNQfy(unq)
@@ -21,16 +21,23 @@ const addArtist = function(artistJson){
 
 }
 
-const getArtistById = function(id){
-  return getUNQfy().getArtistById(id)
-}
+function parseAlbumsArtist(artistObj){
 
-const parseAlbumsArtist = function(artistObj){
-  artistObj.albums = getUNQfy().getAlbumsForArtist(artistObj.name)
+  artistObj.albums = artistObj.albums.map(elem => AlbumWithoutArtist(elem))
   return artistObj
 }
 
-const updateArtist = function(id,artistObj){
+ function getArtistById(id){
+  return  parseAlbumsArtist(getUNQfy().getArtistById(id)) 
+}
+
+function AlbumWithoutArtist(album){
+  return {name : album.name,
+          year : album.year,
+          track : album.tracks}
+}   
+
+function updateArtist(id,artistObj){
   let unq = getUNQfy()
   let artist = getArtistById(id)
   let newArtist = artist
@@ -43,13 +50,13 @@ const updateArtist = function(id,artistObj){
 
 }
 
-const RemoveArtist = function(id){
+function RemoveArtist(id){
   let unq= getUNQfy()
   unq.RemoveArtist(id)
   saveUNQfy(unq)
 }
 
-const getArtistByName= function(name){
+function getArtistByName(name){
   let unq = getUNQfy()
   return parseArtist(unq.getArtistsByName(name))
 }
@@ -67,8 +74,29 @@ function ArtistToObject(artist){
   }
 }
 
-function containsArtist(artist){
-  return getUNQfy().getArtistByName(artist)
+function containsIdArtist(id){
+  return getUNQfy().containsArtistById(id)
+}
+
+function containsArtist(name){
+
+  return getUNQfy().containsArtistByName(name)
+}
+
+function containsidAlbum(id){
+  return getUNQfy().containsidAlbum(id)
+}
+
+function containsAlbumByName(name){
+  return getUNQfy().containsAlbumByName(name)
+}
+
+function addAlbum(albumData){
+  let unq = getUNQfy()
+  let album = unq.addAlbum(albumData.artistId,{name : albumData.name,
+                                   year : albumData.year})
+  saveUNQfy(unq)
+  return AlbumWithoutArtist(album)
 }
 
 module.exports = {
@@ -78,5 +106,9 @@ module.exports = {
     updateArtist,
     RemoveArtist,
     getArtistByName,
-    containsArtist
+    containsArtist,
+    containsIdArtist,
+    containsidAlbum,
+    containsAlbumByName,
+    addAlbum
 }

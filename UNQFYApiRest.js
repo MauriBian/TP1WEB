@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
 const unqController = require('./UNQFYController')
-const errorsMod = require('./errors')
-const ArtistNotFound = errorsMod.ArtistNotFound
-const ArtistAlreadyExistsError = errorsMod.ArtistAlreadyExistsError
+const apiErrors = require("./ApiErrors")
+const ElementAlreadyExistsError = apiErrors.ElementAlreadyExistsError
+const ElementNotFound = apiErrors.ElementNotFound
+const RelatedElementNotFound = apiErrors.RelatedElementNotFound
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5000;
 const router = express.Router();
@@ -15,8 +16,9 @@ app.use('/api', router);
 
 
 router.post("/artists",(req,res,next) => {
-if (req.body.name != undefined && req.body.country != undefined)   {
-    if (!unqController.containsArtist(req.body)){
+
+
+    if (!unqController.containsArtist(req.body.name)){
         let artist = unqController.addArtist(req.body)
         res.status(201)
         res.json({
@@ -26,49 +28,42 @@ if (req.body.name != undefined && req.body.country != undefined)   {
             "country" : artist.country})
         }
     else {
-        next(new ArtistAlreadyExistsError())
+        next(new ElementAlreadyExistsError())
     }
-}
-else{
-    next(new SyntaxError())
-} 
+
+
 })
- 
+
 
 router.get("/artists/:id",(req,res,next) => {
-    if (unqController.getArtistById(req.params.id)){
+    if (unqController.containsIdArtist(req.params.id)){
         res.status(200)
-        res.json(unqController.parseAlbumsArtist(unqController.getArtistById(req.params.id)))
+        res.json(unqController.getArtistById(req.params.id))
     }
     else{
-        next(new ArtistNotFound())
+        next(new ElementNotFound())
     }})
 
 
 
 router.put("/artists/:id",(req,res,next) => {
-    if (unqController.getArtistById(req.params.id)){
-        res.status(200)
-        if (req.body.name != undefined && req.body.country != undefined){
-            res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
-        }
-        else{
-            next(new SyntaxError())
-        }
-        
+    if (unqController.containsIdArtist(req.params.id)){
+        res.status(200) 
+        res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
+      
     }
     else{
-        next(new ArtistNotFound())
+        next(new ElementNotFound())
     }}
 )
 
 router.delete("/artists/:id",(req,res,next) => {res.status(204)
-    if (unqController.getArtistById(req.params.id)){
+    if (unqController.containsIdArtist(req.params.id)){
     unqController.RemoveArtist(req.params.id)
     res.send("Artista Eliminado")
     }
     else{
-        next(new ArtistNotFound())
+        next(new ElementNotFound())
     }
 })
 
@@ -84,19 +79,34 @@ router.get("/artists",(req,res) =>{
 
 })
 
+router.post("/albums",(req,res,next) => {
+    if (!unqController.containsAlbumByName(req.body.name)){
+        if(unqController.containsIdArtist(req.body.artistId)){
+            res.status(200)
+            res.json(unqController.addAlbum(req.body))
+        }
+        else{
+            next(new RelatedElementNotFound())
+        }
+    }
+    else{
+        next(new ElementAlreadyExistsError())
+    }
+})
+
 function errorHandler(err,req,res,next){
     console.log(err)
-    if (err instanceof ArtistAlreadyExistsError){
-        res.status(409)
+    if (err instanceof ElementAlreadyExistsError){
+        res.status(err.status)
         res.json({
-            status : 409,
-            errorCode : "RESOURCE_ALREADY_EXISTS"})
+            status : err.status,
+            errorCode : err.errorCode})
     }
-    if (err instanceof ArtistNotFound){
-        res.status(404)
+    if (err instanceof ElementNotFound){
+        res.status(err.status)
         res.json({
-            status : 404,
-            errorCode : "RESOURCE_NOT_FOUND"})
+            status : err.status,
+            errorCode : err.errorCode})
     }
     if (err instanceof SyntaxError){
         res.status(400)
