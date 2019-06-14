@@ -158,8 +158,9 @@ const _getAlbumsForArtist = function (artistName){
 const _populateAlbumsForArtist = function (artistName){
 
   let name = parseName(artistName.toString());
+  let id = 0;
   try {
-    let id = searchArtistByName(name).id;
+    id = searchArtistByName(name).id;
   }catch(e){
     console.log("NO existe el artista en la BD");
   }
@@ -174,9 +175,17 @@ const _populateAlbumsForArtist = function (artistName){
       });
    } )
    .catch(error =>  {
-     console.log(error.name)
+     console.log(error)
    })
   
+}
+
+const prueba = function (){
+  const unqInst = getUNQfy();
+  const l = unqInst.getAllTracks()[2]
+  console.log(l)
+  l.getLyrics();
+  saveUNQfy(unqInst);
 }
 
 const _searchByName = function(argus){
@@ -225,7 +234,8 @@ const comandos = {
   createPlaylist : _createPlaylist,
   getAlbumsForArtist : _getAlbumsForArtist,
   populateAlbumsForArtist : _populateAlbumsForArtist,
-  help : _help
+  help : _help,
+  p : prueba
 
 };
 
