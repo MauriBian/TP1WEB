@@ -6,7 +6,7 @@ class Track extends Searchable{
     super (_id, _name);
     this.duration = _duration;
     this.genres = _genres;
-    this.lyrics;
+    this.lyrics = "";
     this.mmclient = new MusixMatch.MusixMatchClient();
   }
 
@@ -34,20 +34,23 @@ class Track extends Searchable{
     return this.genres.includes(genre);
   }
 
-  getLyrics(){ 
-    if(this.lyrics !== undefined){
+  getLyrics(unqinst){ 
+    if(this.lyrics !== ""){
       console.log("Letra: ")
       console.log(this.lyrics)
       return this.lyrics;
-    }
-    console.log("Actualizando letra... ")
-    let track = this.mmclient.searchTrack(this.getName());  
-    return this.mmclient.getLyrics(track)
+    }else{
+      console.log("Actualizando letra... ")
+      let track = this.mmclient.searchTrack(this.getName());  
+      return this.mmclient.getLyrics(track)
       .then((response) => {
       this.lyrics= response.message.body.lyrics.lyrics_body
       console.log('Letras actualizadas - Intente nuevamente')
+      unqinst.save('data.json');
       return response.message.body.lyrics.lyrics_body;
       })
+    }
+    
     }
   }
 
