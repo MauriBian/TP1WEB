@@ -182,10 +182,10 @@ const _populateAlbumsForArtist = function (artistName){
 
 const prueba = function (){
   const unqInst = getUNQfy();
-  const l = unqInst.getAllTracks()[2]
+  const l = unqInst.getAllTracks()[3]
   console.log(l)
-  l.getLyrics();
-  saveUNQfy(unqInst);
+  l.getLyrics(unqInst);
+
 }
 
 const _searchByName = function(argus){
