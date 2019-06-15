@@ -5,6 +5,7 @@ const apiErrors = require("./ApiErrors")
 const ElementAlreadyExistsError = apiErrors.ElementAlreadyExistsError
 const ElementNotFound = apiErrors.ElementNotFound
 const RelatedElementNotFound = apiErrors.RelatedElementNotFound
+const InvalidJSON = apiErrors.InvalidJSON
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5000;
 const router = express.Router();
@@ -17,19 +18,24 @@ app.use('/api', router);
 
 router.post("/artists",(req,res,next) => {
 
-
-    if (!unqController.containsArtist(req.body.name)){
-        let artist = unqController.addArtist(req.body)
-        res.status(201)
-        res.json({
-            "id" : artist.id,
-            "name" : artist.name,
-            "albums" : artist.albums,
-            "country" : artist.country})
+    if (req.body.name && req.body.country ){
+        if (!unqController.containsArtist(req.body.name)){
+            let artist = unqController.addArtist(req.body)
+            res.status(201)
+            res.json({
+                "id" : artist.id,
+                "name" : artist.name,
+                "albums" : artist.albums,
+                "country" : artist.country})
+            }
+        else {
+            next(new ElementAlreadyExistsError())
         }
-    else {
-        next(new ElementAlreadyExistsError())
     }
+    else{
+        next(new InvalidJSON())
+    }
+    
 
 
 })
@@ -47,15 +53,20 @@ router.get("/artists/:id",(req,res,next) => {
 
 
 router.put("/artists/:id",(req,res,next) => {
-    if (unqController.containsIdArtist(req.params.id)){
-        res.status(200) 
-        res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
-      
+    if (req.body.name && req.body.country ){
+        if (unqController.containsIdArtist(req.params.id)){
+            res.status(200) 
+            res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
+          
+        }
+        else{
+            next(new ElementNotFound())
+        }
     }
     else{
-        next(new ElementNotFound())
-    }}
-)
+        next(new InvalidJSON())
+    }
+})
 
 router.delete("/artists/:id",(req,res,next) => {res.status(204)
     if (unqController.containsIdArtist(req.params.id)){
@@ -80,18 +91,25 @@ router.get("/artists",(req,res) =>{
 })
 
 router.post("/albums",(req,res,next) => {
-    if (!unqController.containsAlbumByName(req.body.name)){
-        if(unqController.containsIdArtist(req.body.artistId)){
-            res.status(201)
-            res.json(unqController.addAlbum(req.body))
+    if (req.body.name && req.body.year && req.body.artistId !== undefined){
+        
+        if (!unqController.containsAlbumByName(req.body.name)){
+            if(unqController.containsIdArtist(req.body.artistId)){
+                res.status(201)
+                res.json(unqController.addAlbum(req.body))
+            }
+            else{
+                next(new RelatedElementNotFound())
+            }
         }
         else{
-            next(new RelatedElementNotFound())
+            next(new ElementAlreadyExistsError())
         }
     }
     else{
-        next(new ElementAlreadyExistsError())
+        next(new InvalidJSON())
     }
+
 })
 
 router.get("/albums/:id",(req,res,next) => {
@@ -105,13 +123,19 @@ router.get("/albums/:id",(req,res,next) => {
 })
 
 router.patch("/albums/:id",(req,res,next) => {
-    if (unqController.containsidAlbum(req.params.id)){
-        res.status(200)
-        res.json(unqController.UpdateAlbum(req.params.id,req.body))
+    if (req.body.name || req.body.year ){
+        if (unqController.containsidAlbum(req.params.id)){
+            res.status(200)
+            res.json(unqController.UpdateAlbum(req.params.id,req.body))
+        }
+        else{
+            next(new ElementNotFound())
+        }
     }
     else{
-        next(new ElementNotFound())
+        next(new InvalidJSON())
     }
+ 
 })
 
 router.delete("/albums/:id",(req,res,next) => {
@@ -121,7 +145,7 @@ router.delete("/albums/:id",(req,res,next) => {
         res.send("Album Eliminado")
     }
     else{
-        next(new ElementNotFound)
+        next(new ElementNotFound())
     }
 })
 
@@ -136,6 +160,21 @@ router.get("/albums",(req,res) => {
     }
 })
 
+router.get("/tracks/:id/lyrics",(req,res,next)=> {
+    if (unqController.containsIdTrack(req.params.id)){
+        res.status(200)
+        
+        unqController.getLyrics(req.params.id)
+    }
+    else{
+        next(new ElementNotFound())
+    }
+})
+
+app.all("*",(req,res,next)=> {
+    next(new ElementNotFound())
+})
+
 function errorHandler(err,req,res,next){
     console.log(err)
     if (apiErrors.Errores.some(elem => err instanceof elem)){
@@ -148,12 +187,10 @@ function errorHandler(err,req,res,next){
     if (err instanceof SyntaxError){
         res.status(400)
         res.json({
-            status : 400,
+            status: 400,
             errorCode : "BAD_REQUEST"
         })
     }
-  
-    
     else{
         next()
     }

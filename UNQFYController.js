@@ -93,6 +93,10 @@ function containsAlbumByName(name){
   return getUNQfy().containsAlbumByName(name)
 }
 
+function containsIdTrack(id){
+  return getUNQfy().containsIdTrack(id)
+}
+
 function UpdateAlbum(id,albumObj){
   let unq = getUNQfy()
   let album = unq.getAlbumById(id)
@@ -129,6 +133,11 @@ function getAlbumsByName(name){
   return getUNQfy().getAlbumsByName(name).map(elem => AlbumWithoutArtist(elem))
 }
 
+function getLyrics(idTrack){
+  let unq = getUNQfy()
+  return unq.getTrackById(idTrack).getLyrics(unq)
+}
+
 module.exports = {
     addArtist,
     getArtistById,
@@ -144,5 +153,7 @@ module.exports = {
     getAlbumById,
     UpdateAlbum,
     RemoveAlbum,
-    getAlbumsByName
+    getAlbumsByName,
+    containsIdTrack,
+    getLyrics,
 }

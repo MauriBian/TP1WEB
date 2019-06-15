@@ -24,9 +24,16 @@ class APIError extends Error {
      }
  }
 
+ class InvalidJSON extends APIError{
+     constructor(){
+         super("InvalidJSON",400,"BAD_REQUEST")
+     }
+ }
+
  module.exports={
      ElementAlreadyExistsError: ElementAlreadyExistsError,
      ElementNotFound : ElementNotFound,
      RelatedElementNotFound : RelatedElementNotFound,
-     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound]
+     InvalidJSON,
+     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON]
  }

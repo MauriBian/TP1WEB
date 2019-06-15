@@ -264,6 +264,10 @@ class UNQfy {
     return this.getAllAlbums().some(elem => elem.id == id)
   }
 
+  containsIdTrack(id){
+    return this.getAllTracks().some(elem => elem.id == id)
+  }
+
   containsAlbumByName(name){
     return this.getAllAlbums().some(elem => elem.name == name)
   }
