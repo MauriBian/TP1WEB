@@ -29,7 +29,7 @@ class UNQfy {
   //   artistData.name (string)
   //   artistData.country (string)
   // retorna: el nuevo artista creado
-  addArtist(artistData, id= 1) {
+  addArtist(artistData) {
   /* Crea un artista y lo agrega a unqfy.El objeto artista creado debe soportar (al menos):
     - una propiedad name (string)
     - una propiedad country (string)
@@ -79,6 +79,15 @@ class UNQfy {
       artist.addAlbum(album);
       return album;
     }
+
+    addAlbumWithID(artistId, albumData,id) {
+
+        let artist =  this.getArtistById(artistId);
+        let album = new Album(id,albumData.name,albumData.year,artist);
+        this.lastId+= 1;
+        artist.addAlbum(album);
+        return album;
+        }
 
 
   // trackData: objeto JS con los datos necesarios para crear un track
@@ -135,10 +144,10 @@ class UNQfy {
   
   RemoveAlbum(albumId){
     let album = this.getAlbumById(albumId);
-    if(! album === undefined){ 
-      album.artist.removeAlbum(album);
+    if( album != undefined){ 
+      album.artist.albums = this.removeElement(albumId,album.artist.albums)
       if (this.playLists.length > 0){
-        this.playLists.forEach(elem => elem.removeTracks(album.tracks));
+        this.playLists.forEach(elem => elem.tracks = this.removeElement(albumId,elem.tracks));
       }
     }
     else{
@@ -148,12 +157,14 @@ class UNQfy {
 
   RemoveTrack(id){
     let track = this.getTrackById(id);
-    if (! track === undefined) {
+    if ( track != undefined) {
       let album = this.getAllAlbums().find(elem => elem.tracks.includes(track));
       if (this.playLists.length > 0){
-        this.playLists.forEach(elem => {if (elem.tracks.includes(track)){elem.tracks.pop(track)}} );
+        this.playLists.forEach(elem => {
+          elem.tracks = this.removeElement(id,elem.tracks)
+        } );
       }
-      album.removeTrack();
+      album.tracks = this.removeElement(id,album.tracks)
     }
     else{
       throw new ElementDoesntExistsError ("Error: El track que intenta borrar no existe");
@@ -230,7 +241,7 @@ class UNQfy {
   }
 
   getArtistsByName(name){
-    return this.artists.filter(elem => elem.name.toLowerCase().includes(name))
+    return this.artists.filter(elem => elem.name.toLowerCase().includes(name.toLowerCase()))
   }
 
   getArtistByName(artistName){
@@ -278,12 +289,11 @@ class UNQfy {
       throw new ArtistNotFound()
     }
   
-
-    
-
-    
   }
 
+  getAlbumsByName(name){
+    return this.getAllAlbums().filter(elem => elem.name.toLowerCase().includes(name.toLowerCase()))
+  }
   AlbumWithoutArtist(album){
     return {name : album.name,
             year : album.year,

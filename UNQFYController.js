@@ -32,9 +32,11 @@ function parseAlbumsArtist(artistObj){
 }
 
 function AlbumWithoutArtist(album){
-  return {name : album.name,
+  return {
+          id : album.id,
+          name : album.name,
           year : album.year,
-          track : album.tracks}
+          tracks : album.tracks}
 }   
 
 function updateArtist(id,artistObj){
@@ -56,7 +58,7 @@ function RemoveArtist(id){
   saveUNQfy(unq)
 }
 
-function getArtistByName(name){
+function getArtistsByName(name){
   let unq = getUNQfy()
   return parseArtist(unq.getArtistsByName(name))
 }
@@ -84,19 +86,47 @@ function containsArtist(name){
 }
 
 function containsidAlbum(id){
-  return getUNQfy().containsidAlbum(id)
+  return getUNQfy().containsAlbumById(id)
 }
 
 function containsAlbumByName(name){
   return getUNQfy().containsAlbumByName(name)
 }
 
+function UpdateAlbum(id,albumObj){
+  let unq = getUNQfy()
+  let album = unq.getAlbumById(id)
+  let newAlbum = album
+  newAlbum.name = albumObj.name || album.name
+  newAlbum.year = albumObj.year || album.year
+  unq.RemoveAlbum(album.id)
+  unq.addAlbumWithID(newAlbum.artist.id,newAlbum,newAlbum.id)
+  saveUNQfy(unq)
+  return AlbumWithoutArtist(newAlbum)
+}
+
+function RemoveAlbum(id){
+  let unq = getUNQfy()
+  unq.RemoveAlbum(id)
+  saveUNQfy(unq)
+}
+
 function addAlbum(albumData){
   let unq = getUNQfy()
-  let album = unq.addAlbum(albumData.artistId,{name : albumData.name,
-                                   year : albumData.year})
+  let album = unq.addAlbum(
+    albumData.artistId,
+    {name : albumData.name,
+    year : albumData.year})
   saveUNQfy(unq)
   return AlbumWithoutArtist(album)
+}
+
+function getAlbumById(id){
+  return AlbumWithoutArtist(getUNQfy().getAlbumById(id))
+}
+
+function getAlbumsByName(name){
+  return getUNQfy().getAlbumsByName(name).map(elem => AlbumWithoutArtist(elem))
 }
 
 module.exports = {
@@ -105,10 +135,14 @@ module.exports = {
     parseAlbumsArtist,
     updateArtist,
     RemoveArtist,
-    getArtistByName,
+    getArtistsByName,
     containsArtist,
     containsIdArtist,
     containsidAlbum,
     containsAlbumByName,
-    addAlbum
+    addAlbum,
+    getAlbumById,
+    UpdateAlbum,
+    RemoveAlbum,
+    getAlbumsByName
 }

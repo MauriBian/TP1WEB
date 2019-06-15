@@ -70,11 +70,11 @@ router.delete("/artists/:id",(req,res,next) => {res.status(204)
 router.get("/artists",(req,res) =>{
     if (req.query.name != undefined){
     res.status(200)
-    res.json(unqController.getArtistByName(req.query.name))
+    res.json(unqController.getArtistsByName(req.query.name))
     }
     else{
         res.status(200)
-        res.json(unqController.getArtistByName(""))
+        res.json(unqController.getArtistsByName(""))
     }
 
 })
@@ -82,7 +82,7 @@ router.get("/artists",(req,res) =>{
 router.post("/albums",(req,res,next) => {
     if (!unqController.containsAlbumByName(req.body.name)){
         if(unqController.containsIdArtist(req.body.artistId)){
-            res.status(200)
+            res.status(201)
             res.json(unqController.addAlbum(req.body))
         }
         else{
@@ -94,19 +94,56 @@ router.post("/albums",(req,res,next) => {
     }
 })
 
+router.get("/albums/:id",(req,res,next) => {
+    if (unqController.containsidAlbum(req.params.id)){
+        res.status(200)
+        res.json(unqController.getAlbumById(req.params.id))
+    }
+    else{
+        next(new ElementNotFound())
+    }
+})
+
+router.patch("/albums/:id",(req,res,next) => {
+    if (unqController.containsidAlbum(req.params.id)){
+        res.status(200)
+        res.json(unqController.UpdateAlbum(req.params.id,req.body))
+    }
+    else{
+        next(new ElementNotFound())
+    }
+})
+
+router.delete("/albums/:id",(req,res,next) => {
+    if (unqController.containsidAlbum(req.params.id)){
+        res.status(204)
+        unqController.RemoveAlbum(req.params.id)
+        res.send("Album Eliminado")
+    }
+    else{
+        next(new ElementNotFound)
+    }
+})
+
+router.get("/albums",(req,res) => {
+    if (req.query.name != undefined){
+        res.status(200)
+        res.json(unqController.getAlbumsByName(req.query.name))
+    }
+    else{
+        res.status(200)
+        res.json(unqController.getAlbumsByName(""))
+    }
+})
+
 function errorHandler(err,req,res,next){
     console.log(err)
-    if (err instanceof ElementAlreadyExistsError){
+    if (apiErrors.Errores.some(elem => err instanceof elem)){
         res.status(err.status)
         res.json({
-            status : err.status,
-            errorCode : err.errorCode})
-    }
-    if (err instanceof ElementNotFound){
-        res.status(err.status)
-        res.json({
-            status : err.status,
-            errorCode : err.errorCode})
+        status : err.status,
+        errorCode : err.errorCode
+        })
     }
     if (err instanceof SyntaxError){
         res.status(400)

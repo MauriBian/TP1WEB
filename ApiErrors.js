@@ -28,4 +28,5 @@ class APIError extends Error {
      ElementAlreadyExistsError: ElementAlreadyExistsError,
      ElementNotFound : ElementNotFound,
      RelatedElementNotFound : RelatedElementNotFound,
+     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound]
  }
