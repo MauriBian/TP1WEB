@@ -164,7 +164,7 @@ router.get("/tracks/:id/lyrics",(req,res,next)=> {
     if (unqController.containsIdTrack(req.params.id)){
         res.status(200)
         
-        unqController.getLyrics(req.params.id)
+        res.json(unqController.getLyrics(req.params.id))
     }
     else{
         next(new ElementNotFound())

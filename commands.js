@@ -175,7 +175,7 @@ const _populateAlbumsForArtist = function (artistName){
       });
    } )
    .catch(error =>  {
-     console.log(error)
+     console.log("Error al buscar el artista")
    })
   
 }
@@ -240,7 +240,7 @@ const comandos = {
 };
 
   function parseName(name){
-      return name.replace("_"," ");
+      return name.replace(/_/g," ");
   }
 
 

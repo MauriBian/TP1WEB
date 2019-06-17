@@ -1,42 +1,42 @@
 #!/bin/bash
 
-node main.js addArtist RingoStarr Inglaterra
+node main.js addArtist Ringo_Starr Inglaterra
 
-node main.js addArtist ElvisPresley EstadosUnidos
+node main.js addArtist Elvis_Presley EstadosUnidos
 
-node main.js addArtist LucianoPereyra Argentina
+node main.js addArtist Luciano_Pereyra Argentina
 
-node main.js addArtist AriannaGrande EstadosUnidos
+node main.js addArtist Arianna_Grande EstadosUnidos
 
-node main.js addArtist KatyPerry EstadosUnidos
+node main.js addArtist Katy_Perry EstadosUnidos
 
-node main.js addArtist LadyGaga EstadosUnidos
+node main.js addArtist Lady_Gaga EstadosUnidos
 
-node main.js addAlbum 0 SentimentalJourney 1970
+node main.js addAlbum 0 Sentimental_Journey 1970
 
 node main.js addAlbum 0 Ringo 1973
 
-node main.js addAlbum 0 GoodnightVienna 1974
+node main.js addAlbum 0 Goodnight_Vienna 1974
 
-node main.js addAlbum 1 MoodyBlue 1977
+node main.js addAlbum 1 Moody_Blue 1977
 
 node main.js addAlbum 1 Elvis 1956
 
-node main.js addAlbum 1 BlueHawaii 1961
+node main.js addAlbum 1 Blue_Hawaii 1961
 
-node main.js addAlbum 2 LaVidaAlViento 2017
+node main.js addAlbum 2 La_Vida_Al_Viento 2017
 
-node main.js addAlbum 3 YoursTrully 2013
+node main.js addAlbum 3 Yours_Trully 2013
 
-node main.js addAlbum 3 YoursTrully 2013
+node main.js addAlbum 3 Yours_Trully 2013
 
-node main.js addAlbum 3 MYEverything 2014
+node main.js addAlbum 3 MY_Everything 2014
 
-node main.js addAlbum 3 DangerousWoman 2016
+node main.js addAlbum 3 Dangerous_Woman 2016
 
-node main.js addAlbum 5 ArtPop 2013
+node main.js addAlbum 5 Art_Pop 2013
 
-node main.js addAlbum 5 TheFrame 2008
+node main.js addAlbum 5 The_Frame 2008
 
 node main.js addAlbum 5 Joanne 2016
 
@@ -44,35 +44,35 @@ node main.js addAlbum 4 Witness 2017
 
 node main.js addAlbum 4 Prism 2013
 
-node main.js addAlbum 4 TeenageDream 2010
+node main.js addAlbum 4 Teenage_Dream 3 2010
 
 node main.js addTrack 8 Ocapella 4 Rock Indie
 
 node main.js addTrack 8 CallMe 3 Rock Country
 
-node main.js addTrack 8 No No Song 2 Rock Industrial
+node main.js addTrack 8 No_No_Song 2 Rock Industrial
 
-node main.js addTrack 6 SentimentalJourney 4 Rock Pop
+node main.js addTrack 6 Sentimental_Journey 4 Rock Pop
 
-node main.js addTrack 6 ByeByeBlackBird 4 Rock Pop
+node main.js addTrack 6 Bye_Bye_BlackBird 4 Rock Pop
 
 node main.js addTrack 6 Dream 3 Rock Pop
 
 node main.js addTrack 7 Photograph 4 Rock Pop
 
-node main.js addTrack 7 OhMy 4 Rock Pop
+node main.js addTrack 7 Oh_My 4 Rock Pop
 
-node main.js addTrack 7 AllOfMe 3 Rock Pop
+node main.js addTrack 7 All_Of_Me 3 Rock Pop
 
-node main.js addTrack 9 GoNow 3 Rock Blues
+node main.js addTrack 9 Go_Now 3 Rock Blues
 
-node main.js addTrack 9 ImJustASinger 3 Rock Blues
+node main.js addTrack 9 Im_Just_A_Singer 3 Rock Blues
 
-node main.js addTrack 9 NevercomesTheDay 3 Rock Blues
+node main.js addTrack 9 Never_comes_The_Day 3 Rock Blues
 
-node main.js createPlaylist SadMusic 15 Blues
+node main.js createPlaylist Sad_Music 15 Blues
 
-node main.js createPlaylist PopMusic 15 Pop
+node main.js createPlaylist Pop_Music 15 Pop
 
 
 

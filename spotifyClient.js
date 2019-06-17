@@ -4,7 +4,7 @@ const options = {
                     headers: { 
                         'Accept': 'application/json',
                         'Content-Type': 'application/json', 
-                        'Authorization': ' Bearer ' + 'BQAHHqnd_Dyvv7DZrK873Tgtoweu3TOA0p_dB5AmhzShMEw5FFg40CbEBcoxBx0djh3jind545Z9xDteHJwfVF_-GgmIEKWY2wgzO9_TRTqX6KLaeAuIEHzqFiuyfderCnFNq3lUShbEUP3mFw' 
+                        'Authorization': ' Bearer ' + 'BQBJskpZWStafaqVUMY__TJAGHh1aqC3YlEPNuKaQhxyrYbgzqrQQYmjUzyMchnkGhszOwkRhiOri9V8ueu1OOS5Dr4D6CdUHb5lnxle10goQTMu1H6IFIE_xHlABkBHnrvupY-tFL4Ao1oCrg' 
                     },
                     json: true,
                 };
@@ -24,6 +24,7 @@ class SpotifyClient {
             options.url = resp;
             return rp.get(options);
         } )
+        .catch ( e => console.log ("ERROR" + e))
         
 
     }
