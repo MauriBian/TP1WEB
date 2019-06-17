@@ -133,9 +133,22 @@ function getAlbumsByName(name){
   return getUNQfy().getAlbumsByName(name).map(elem => AlbumWithoutArtist(elem))
 }
 
+function saveLyrics(idTrack){
+  let unq = getUNQfy()
+  let track = unq.getTrackById(idTrack)
+  const promise = Promise.resolve(track.getLyrics())
+  return promise.then((lyrics)=>{
+    console.log(lyrics)
+    saveUNQfy(unq)
+  })
+
+}
+
 function getLyrics(idTrack){
   let unq = getUNQfy()
-  return unq.getTrackById(idTrack).getLyrics(unq)
+  saveLyrics(idTrack)
+  let track = unq.getTrackById(idTrack)
+  return track.lyrics
 }
 
 module.exports = {
