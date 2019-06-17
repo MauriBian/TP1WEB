@@ -1,5 +1,6 @@
 const Searchable = require ('./searchable.js');
 const MusixMatch = require ('./musixmatchClient.js');
+const musixMatchClient = new MusixMatch.MusixMatchClient();
 
 class Track extends Searchable{
   constructor(_id, _name, _duration, _genres = []){
@@ -7,7 +8,6 @@ class Track extends Searchable{
     this.duration = _duration;
     this.genres = _genres;
     this.lyrics = "";
-    this.mmclient = new MusixMatch.MusixMatchClient();
   }
 
   getDuration(){
@@ -34,25 +34,21 @@ class Track extends Searchable{
     return this.genres.includes(genre);
   }
 
-  getLyrics(unqinst){ 
-    if(this.lyrics !== ""){
-      console.log("Letra: ")
-      console.log(this.lyrics)
-      return this.lyrics;
-    }else{
-      console.log("Actualizando letra... ")
-      let track = this.mmclient.searchTrack(this.getName());  
-      return this.mmclient.getLyrics(track)
-      .then((response) => {
-      this.lyrics= response.message.body.lyrics.lyrics_body
-      console.log('Letras actualizadas - Intente nuevamente')
-      unqinst.save('data.json');
-      return response.message.body.lyrics.lyrics_body;
-      })
+  getLyrics(){ 
+    if((this.lyrics !== "")){
+      console.log("------Letra: ");
+      return(this.lyrics);
     }
-    
+    else{
+      console.log('-------Actualizando letra... ')
+      let track = musixMatchClient.searchTrack(this.getName());  
+      return musixMatchClient.getLyrics(track)
+      .then((response)=> {
+        this.lyrics = response.message.body.lyrics.lyrics_body
+        return ('------Letras actualizadas - Intente nuevamente')});
     }
   }
+}
 
 
 module.exports = {Track : Track};

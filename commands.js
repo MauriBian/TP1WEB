@@ -180,11 +180,15 @@ const _populateAlbumsForArtist = function (artistName){
   
 }
 
-const prueba = function (){
+const _getLyrics = function (argus){
   const unqInst = getUNQfy();
-  const l = unqInst.getAllTracks()[3]
-  console.log(l)
-  l.getLyrics(unqInst);
+  
+    let track = unqInst.searchTrackByName(argus[0])
+    const promise = Promise.resolve(track.getLyrics())
+    return promise.then((lyrics)=>{
+      console.log(lyrics)
+      saveUNQfy(unqInst)
+    })
 
 }
 
@@ -215,7 +219,8 @@ const _help = function (argus){
   console.log("- searchByName [name]: busca tracks, artistas, playlist y albums por el nombre")
   console.log("- createPlaylist [name] [duration] [genero1] [genero2]..  : crea una playList en base a la duracionMaxima y generos elegidos")
   console.log("- getAlbumsForArtist [artistName] : devuelve todos los albums de un artista dado")
-  console.log ("- populateAlbumsForArtist [artistName] consulta a Spotify los albums del artista y los devuelve ")
+  console.log("- populateAlbumsForArtist [artistName] consulta a Spotify los albums del artista y los devuelve ")
+  console.log("- getLyrics [trackName] : devuelve las lyrics del track , actualizadas desde MusixMatch, si éstas están disponibles")
 }
 
 const comandos = {
@@ -235,7 +240,7 @@ const comandos = {
   getAlbumsForArtist : _getAlbumsForArtist,
   populateAlbumsForArtist : _populateAlbumsForArtist,
   help : _help,
-  p : prueba
+  getLyrics : _getLyrics,
 
 };
 

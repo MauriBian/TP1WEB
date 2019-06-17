@@ -229,15 +229,19 @@ class UNQfy {
 
   searchByName(name){
 
-    let artistfiltered = this.artists.filter(elem => elem.name.includes(name))
-    let albumfiltered = this.getAllAlbums().filter(elem => elem.name.includes(name))
-    let trackfiltered = this.getAllTracks().filter(elem => elem.name.includes(name))
-    let playListfiltered = this.playLists.filter(elem => elem.name.includes(name))
+    let artistfiltered = this.artists.filter(elem => this.matchNames(elem, name))
+    let albumfiltered = this.getAllAlbums().filter(elem => this.matchNames(elem, name))
+    let trackfiltered = this.getAllTracks().filter(elem => this.matchNames(elem, name))
+    let playListfiltered = this.playLists.filter(elem => this.matchNames(elem, name))
     return {artists : artistfiltered,
     albums : albumfiltered,
     tracks : trackfiltered,
     playlists : playListfiltered}
 
+  }
+
+  matchNames(elem, someName){
+    return elem.name.toLowerCase().includes(someName.toLowerCase())
   }
 
   getArtistsByName(name){
@@ -303,6 +307,16 @@ class UNQfy {
             year : album.year,
             track : album.tracks}
   }         
+
+
+  searchTrackByName(name){
+    let result = this.getAllTracks().find(elem => this.matchNames(elem, name))
+    if (result === undefined){
+      throw new Error("searchTrackByName undefined")
+    }
+    return result;
+  }
+
 
   // name: nombre de la playlist
   // genresToInclude: array de generos

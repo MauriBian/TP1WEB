@@ -28,8 +28,6 @@ node main.js addAlbum 2 La_Vida_Al_Viento 2017
 
 node main.js addAlbum 3 Yours_Trully 2013
 
-node main.js addAlbum 3 Yours_Trully 2013
-
 node main.js addAlbum 3 MY_Everything 2014
 
 node main.js addAlbum 3 Dangerous_Woman 2016
@@ -73,6 +71,8 @@ node main.js addTrack 9 Never_comes_The_Day 3 Rock Blues
 node main.js createPlaylist Sad_Music 15 Blues
 
 node main.js createPlaylist Pop_Music 15 Pop
+
+echo "- Datos cargados -"
 
 
 

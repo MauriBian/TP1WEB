@@ -24,16 +24,17 @@ class MusixMatchClient{
     }
 
 
-    getLyrics(track){
-        return track
+    getLyrics(trackPromise){
+        return trackPromise
         .then((response) => {
             let track = response.message.body.track_list.find(tracks => (tracks.track.has_lyrics == 1)) 
             //por ahora busco uno que si tenga lyrics para mostrar
             let id = track.track.track_id
+            
             options.uri = BASE_URL + '/track.lyrics.get?track_id='+id;  
             return rp.get(options)
-
-        })       
+           
+        }).catch((error)=> console.log(error.message))
     }
 }
 
