@@ -194,7 +194,7 @@ const _getLyrics = function (argus){
 
 const _searchByName = function(argus){
   const unqInst = getUNQfy();
-  const elems  = unqInst.searchByName(argus[0]);
+  const elems  = unqInst.searchByName(parseName(argus[0]));
   console.log("Artistas: " );
   elems.artists.forEach (x => console.log(x));
   console.log("Albumes: " );
