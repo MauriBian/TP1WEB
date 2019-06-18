@@ -17,24 +17,30 @@ class MusixMatchClient{
         options.qs.q_track= trackName;
         
         options.qs.q_artist= artist; 
-        // por si se agrega artist, no era necesario en el tp
-        //pero asi coincide la bien la letra que se busca
+        //se agrega el artista para que coincida mejor las letras
 
         return rp.get(options)
+        
     }
 
 
     getLyrics(trackPromise){
         return trackPromise
         .then((response) => {
-            let track = response.message.body.track_list.find(tracks => (tracks.track.has_lyrics == 1)) 
-            //por ahora busco uno que si tenga lyrics para mostrar
-            let id = track.track.track_id
+            let track = response.message.body.track_list[0].track;
+            if (track.has_lyrics == 1){
+            let id = track.track_id
             
             options.uri = BASE_URL + '/track.lyrics.get?track_id='+id;  
-            return rp.get(options)
+            
+            return rp.get(options).then((response)=> {
+                return response.message.body.lyrics.lyrics_body})
+            }
+
+            else{
+                return Promise.resolve("Lyrics no disponibles en MusixMatch")}
            
-        }).catch((error)=> console.log(error.message))
+        }).catch((error)=> console.log("Error al traer las lyrics de MusixMatch. "+ error.message))
     }
 }
 

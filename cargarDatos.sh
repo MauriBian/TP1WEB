@@ -1,4 +1,5 @@
 #!/bin/bash
+echo " -- Cargando datos"
 
 node main.js addArtist Ringo_Starr Inglaterra
 
@@ -42,7 +43,7 @@ node main.js addAlbum 4 Witness 2017
 
 node main.js addAlbum 4 Prism 2013
 
-node main.js addAlbum 4 Teenage_Dream 3 2010
+node main.js addAlbum 4 Teenage_Dream_3 2010
 
 node main.js addTrack 8 Ocapella 4 Rock Indie
 
@@ -67,6 +68,18 @@ node main.js addTrack 9 Go_Now 3 Rock Blues
 node main.js addTrack 9 Im_Just_A_Singer 3 Rock Blues
 
 node main.js addTrack 9 Never_comes_The_Day 3 Rock Blues
+
+node main.js addAlbum 5 A_star_is_born 2019
+
+node main.js addAlbum 4 Teenage_Dream 2012
+
+node main.js addTrack 35 Wide_awake Pop
+
+node main.js addTrack 35 Roar Pop
+
+node main.js addTrack 34 Shallow Pop
+
+node main.js addTrack 18 Perfect_Illusion Pop
 
 node main.js createPlaylist Sad_Music 15 Blues
 

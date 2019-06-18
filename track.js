@@ -34,18 +34,18 @@ class Track extends Searchable{
     return this.genres.includes(genre);
   }
 
-  getLyrics(){ 
+  getLyrics(artistName){ 
     if((this.lyrics !== "")){
       console.log("------Letra: ");
       return(this.lyrics);
     }
     else{
       console.log('-------Actualizando letra... ')
-      let track = musixMatchClient.searchTrack(this.getName());  
+      let track = musixMatchClient.searchTrack(this.getName(), artistName);  
       return musixMatchClient.getLyrics(track)
       .then((response)=> {
-        this.lyrics = response.message.body.lyrics.lyrics_body
-        return ('------Letras actualizadas - Intente nuevamente')});
+        this.lyrics=response;
+        return ('------Letras actualizadas - Intente nuevamente')} );
     }
   }
 }

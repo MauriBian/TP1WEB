@@ -214,7 +214,6 @@ class UNQfy {
   getTracksMatchingArtist(artistId) {
     let artist =  this.getArtistById(artistId)
     return this.flat(artist.getAlbums().map(album => album.getTracks()));
-
   }
 
   flat (list){
@@ -309,12 +308,19 @@ class UNQfy {
   }         
 
 
-  searchTrackByName(name){
-    let result = this.getAllTracks().find(elem => this.matchNames(elem, name))
+  searchTrackByName(trackName){
+    let result = this.getAllTracks().find(elem => this.matchNames(elem, trackName))
     if (result === undefined){
-      throw new Error("searchTrackByName undefined")
+      throw new Error("searchTrackByName: track undefined")
     }
     return result;
+  }
+
+  //Devuelve un listado de las tracks pertenecientes al artist
+  searchArtistTracks(artistName){
+    let r = this.artists.find(elem => this.matchNames(elem, artistName))
+    let tracks = this.getTracksMatchingArtist(r.id)
+    return "Artist: "+r.name + " - Tracks: "+ tracks.map(t => t.name)
   }
 
 

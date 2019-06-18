@@ -180,16 +180,30 @@ const _populateAlbumsForArtist = function (artistName){
   
 }
 
+const _getArtistTracks = function(argus){
+    const unqInst = getUNQfy();
+    try{
+    const tracks = unqInst.searchArtistTracks(parseName(argus[0]))
+    console.log(tracks)
+    }
+    catch(error){
+      console.log("No se pudo realizar la busqueda de tracks del artista."+ error.message)
+    }
+}
+
 const _getLyrics = function (argus){
   const unqInst = getUNQfy();
-  
-    let track = unqInst.searchTrackByName(argus[0])
-    const promise = Promise.resolve(track.getLyrics())
+  try{
+    let track = unqInst.searchTrackByName(parseName(argus[0]) )
+    const promise = Promise.resolve(track.getLyrics(parseName(argus[1])))
     return promise.then((lyrics)=>{
       console.log(lyrics)
       saveUNQfy(unqInst)
     })
-
+  }
+  catch(error){
+    console.log("Error al traer las lyrics. "+ error.message)
+  }
 }
 
 const _searchByName = function(argus){
@@ -207,7 +221,7 @@ const _searchByName = function(argus){
 
 const _help = function (argus){
   console.log("- addArtist [nombre] [nacionalidad] :  Agrega un artista con su nombre y nacionalidad")
-  console.log("- addTrack [albumID] [nombreAlbum] [genero1] [genero2] [genero3] ...  : Agrega un track al album ")
+  console.log("- addTrack [albumID] [track Name] [genero1] [genero2] [genero3] ...  : Agrega un track al album ")
   console.log("- addAlbum [artist ID] [album Name] [album Year] : Agrega un album")
   console.log ("- removeArtist [artistID] : borra el artista")
   console.log ("- removeAlbum [albumID] : borra el album")
@@ -220,7 +234,8 @@ const _help = function (argus){
   console.log("- createPlaylist [name] [duration] [genero1] [genero2]..  : crea una playList en base a la duracionMaxima y generos elegidos")
   console.log("- getAlbumsForArtist [artistName] : devuelve todos los albums de un artista dado")
   console.log("- populateAlbumsForArtist [artistName] consulta a Spotify los albums del artista y los devuelve ")
-  console.log("- getLyrics [trackName] : devuelve las lyrics del track , actualizadas desde MusixMatch, si éstas están disponibles")
+  console.log("- getLyrics [trackName] [artistName]: devuelve las lyrics del track , actualizadas desde MusixMatch, si éstas están disponibles")
+  console.log("- getArtistTracks [artistName] : devuelve un listado con los tracks que pertencen al artista")
 }
 
 const comandos = {
@@ -241,6 +256,7 @@ const comandos = {
   populateAlbumsForArtist : _populateAlbumsForArtist,
   help : _help,
   getLyrics : _getLyrics,
+  getArtistTracks : _getArtistTracks
 
 };
 
