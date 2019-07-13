@@ -162,18 +162,7 @@ router.get("/albums",(req,res) => {
     }
 })
 
-router.get("/tracks/:id/lyrics",(req,res,next)=> {
-    try{
-        res.status(200)
-        let lyrics = unqController.getLyrics(req.params.id)
-        res.json(lyrics)
-    }
-    catch{
-        next(new ElementNotFound())
-    }
-})
-
-router.post("/track",(req,res,next) => {
+router.post("/tracks",(req,res,next) => {
 
     if (req.body.name && req.body.duration  && req.body.genres){
         try{
@@ -186,14 +175,36 @@ router.post("/track",(req,res,next) => {
 
             next(new ElementAlreadyExistsError())
         }
- 
-    }
-    
+    }  
     else{
         next(new InvalidJSON())
     }
 
 })
+router.delete("/tracks/:id",(req,res,next) => {
+    try{
+        res.status(204)
+        unqController.RemoveTrack(req.params.id)
+        res.send("Track Eliminado")
+    }
+    catch{
+        next(new ElementNotFound())
+    }
+})
+
+router.get("/tracks/:id/lyrics",(req,res,next)=> {
+    try{
+        res.status(200)
+        let lyrics = unqController.getLyrics(req.params.id)
+        res.json(lyrics)
+    }
+    catch{
+        next(new ElementNotFound())
+    }
+})
+
+
+
 
 app.all("*",(req,res,next)=> {
     next(new ElementNotFound())

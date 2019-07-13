@@ -15,6 +15,11 @@ class LoggingConsumer {
         rp.post(url +'logging/addElement/',{json: {'tipo': elementoAgregado.constructor.name,
                                                    'name': elementoAgregado.name,}})
     }
+
+    NotificarElementoEliminado(elementoEliminado) {
+        rp.post(url+'logging/elementRemoved/',{json: {'tipo': elementoEliminado.constructor.name,
+                                                    'name': elementoEliminado.name}})
+    }
     
 }
 module.exports={

@@ -1,11 +1,15 @@
 const LoggingConsumerMod = require('./Logging/LoggingConsumer')
 const LoggingConsumer = LoggingConsumerMod.LoggingConsumer
-class Observer {
+class Notificador {
     constructor() {
         this.suscriptores = [new LoggingConsumer()]
     }
     NotificarElementoAgregado(elementoAgregado) {
-        this.suscriptores.forEach(elem => elem.NotificarElementoAgregado(elementoAgregado) )
+        this.suscriptores.forEach(elem => elem.NotificarElementoAgregado(elementoAgregado))
+    }
+
+    NotificarElementoEliminado(elementoEliminado){
+        this.suscriptores.forEach(elem => elem.NotificarElementoEliminado(elementoEliminado))
     }
 
     Suscribirse(suscriptor){
@@ -18,5 +22,5 @@ class Observer {
 }
 
 module.exports ={
-    Observer: Observer
+    Notificador: Notificador
 }

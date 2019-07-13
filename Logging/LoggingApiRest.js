@@ -20,6 +20,12 @@ router.post("/addElement",(req,res,next) => {
     res.json(req.body)
 })
 
+router.post('/elementRemoved',(req,res,next)=>{
+    const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue eliminado de UNQFY {Info}\n`
+    WriteFile(logg)
+    res.json(req.body)
+})
+
 
 
 
