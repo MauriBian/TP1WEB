@@ -1,6 +1,8 @@
 const unqmod = require("./unqfy")
 const fs = require('fs'); 
-
+const ObserverMod = require('./Observer')
+const Observer = ObserverMod.Observer
+const observer = new Observer()
 function getUNQfy(filename = 'data.json') {
     let unqfy = new unqmod.UNQfy();
     if (fs.existsSync(filename)) {
@@ -16,6 +18,7 @@ function getUNQfy(filename = 'data.json') {
 function addArtist(artistJson){
     let unq = getUNQfy()
     let artist = unq.addArtist(artistJson)
+    observer.NotificarElementoAgregado(artist)
     saveUNQfy(unq)
     return artist
 
