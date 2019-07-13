@@ -30,10 +30,17 @@ class APIError extends Error {
      }
  }
 
+ class MissingArgumentJSON extends APIError{
+    constructor(){
+        super("MissingArgumentJSON",400,"BAD_REQUEST")
+    }
+}
+
  module.exports={
      ElementAlreadyExistsError: ElementAlreadyExistsError,
      ElementNotFound : ElementNotFound,
      RelatedElementNotFound : RelatedElementNotFound,
      InvalidJSON,
+     MissingArgumentJSON : MissingArgumentJSON,
      Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON]
  }
