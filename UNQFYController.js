@@ -1,8 +1,6 @@
 const unqmod = require("./unqfy")
 const fs = require('fs'); 
-const ObserverMod = require('./Observer')
-const Observer = ObserverMod.Observer
-const observer = new Observer()
+
 function getUNQfy(filename = 'data.json') {
     let unqfy = new unqmod.UNQfy();
     if (fs.existsSync(filename)) {
@@ -18,11 +16,12 @@ function getUNQfy(filename = 'data.json') {
 function addArtist(artistJson){
     let unq = getUNQfy()
     let artist = unq.addArtist(artistJson)
-    observer.NotificarElementoAgregado(artist)
     saveUNQfy(unq)
     return artist
 
 }
+
+
 
 function parseAlbumsArtist(artistObj){
 
@@ -128,6 +127,17 @@ function addAlbum(albumData){
   return AlbumWithoutArtist(album)
 }
 
+function addTrack(trackData){
+  let unq = getUNQfy()
+  let track = unq.addTrack(trackData.albumId,{
+    name : trackData.name,
+    duration : trackData.duration,
+    genres : trackData.genres
+  })
+  saveUNQfy(unq)
+  return track
+}
+
 function getAlbumById(id){
   return AlbumWithoutArtist(getUNQfy().getAlbumById(id))
 }
@@ -172,4 +182,5 @@ module.exports = {
     getAlbumsByName,
     containsIdTrack,
     getLyrics,
+    addTrack
 }

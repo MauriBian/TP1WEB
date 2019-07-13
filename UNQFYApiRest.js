@@ -19,7 +19,7 @@ app.use('/api', router);
 router.post("/artists",(req,res,next) => {
 
     if (req.body.name && req.body.country ){
-        if (!unqController.containsArtist(req.body.name)){
+        try{
             let artist = unqController.addArtist(req.body)
             res.status(201)
             res.json({
@@ -28,25 +28,27 @@ router.post("/artists",(req,res,next) => {
                 "albums" : artist.albums,
                 "country" : artist.country})
             }
-        else {
+
+        catch{
+
             next(new ElementAlreadyExistsError())
         }
+ 
     }
+    
     else{
         next(new InvalidJSON())
     }
-    
-
 
 })
 
 
 router.get("/artists/:id",(req,res,next) => {
-    if (unqController.containsIdArtist(req.params.id)){
+    try{
         res.status(200)
         res.json(unqController.getArtistById(req.params.id))
     }
-    else{
+    catch{
         next(new ElementNotFound())
     }})
 
@@ -54,12 +56,12 @@ router.get("/artists/:id",(req,res,next) => {
 
 router.put("/artists/:id",(req,res,next) => {
     if (req.body.name && req.body.country ){
-        if (unqController.containsIdArtist(req.params.id)){
+        try{
             res.status(200) 
             res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
           
         }
-        else{
+        catch{
             next(new ElementNotFound())
         }
     }
@@ -69,11 +71,11 @@ router.put("/artists/:id",(req,res,next) => {
 })
 
 router.delete("/artists/:id",(req,res,next) => {res.status(204)
-    if (unqController.containsIdArtist(req.params.id)){
+    try{
     unqController.RemoveArtist(req.params.id)
     res.send("Artista Eliminado")
     }
-    else{
+    catch{
         next(new ElementNotFound())
     }
 })
@@ -93,7 +95,7 @@ router.get("/artists",(req,res) =>{
 router.post("/albums",(req,res,next) => {
     if (req.body.name && req.body.year && req.body.artistId !== undefined){
         
-        if (!unqController.containsAlbumByName(req.body.name)){
+        try {
             if(unqController.containsIdArtist(req.body.artistId)){
                 res.status(201)
                 res.json(unqController.addAlbum(req.body))
@@ -102,7 +104,7 @@ router.post("/albums",(req,res,next) => {
                 next(new RelatedElementNotFound())
             }
         }
-        else{
+        catch{
             next(new ElementAlreadyExistsError())
         }
     }
@@ -113,22 +115,22 @@ router.post("/albums",(req,res,next) => {
 })
 
 router.get("/albums/:id",(req,res,next) => {
-    if (unqController.containsidAlbum(req.params.id)){
+    try{
         res.status(200)
         res.json(unqController.getAlbumById(req.params.id))
     }
-    else{
+    catch{
         next(new ElementNotFound())
     }
 })
 
 router.patch("/albums/:id",(req,res,next) => {
     if (req.body.name || req.body.year ){
-        if (unqController.containsidAlbum(req.params.id)){
+        try {
             res.status(200)
             res.json(unqController.UpdateAlbum(req.params.id,req.body))
         }
-        else{
+        catch{
             next(new ElementNotFound())
         }
     }
@@ -139,12 +141,12 @@ router.patch("/albums/:id",(req,res,next) => {
 })
 
 router.delete("/albums/:id",(req,res,next) => {
-    if (unqController.containsidAlbum(req.params.id)){
+    try{
         res.status(204)
         unqController.RemoveAlbum(req.params.id)
         res.send("Album Eliminado")
     }
-    else{
+    catch{
         next(new ElementNotFound())
     }
 })
@@ -161,14 +163,36 @@ router.get("/albums",(req,res) => {
 })
 
 router.get("/tracks/:id/lyrics",(req,res,next)=> {
-    if (unqController.containsIdTrack(req.params.id)){
+    try{
         res.status(200)
         let lyrics = unqController.getLyrics(req.params.id)
         res.json(lyrics)
     }
-    else{
+    catch{
         next(new ElementNotFound())
     }
+})
+
+router.post("/track",(req,res,next) => {
+
+    if (req.body.name && req.body.duration  && req.body.genres){
+        try{
+            let track = unqController.addTrack(req.body)
+            res.status(201)
+            res.json(track)
+            }
+
+        catch{
+
+            next(new ElementAlreadyExistsError())
+        }
+ 
+    }
+    
+    else{
+        next(new InvalidJSON())
+    }
+
 })
 
 app.all("*",(req,res,next)=> {

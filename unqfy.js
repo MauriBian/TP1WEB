@@ -17,6 +17,9 @@ const errorsMod = require('./errors')
 const ElementAlreadyExistsError = errorsMod.ElementAlreadyExistsError
 const ElementDoesntExistsError = errorsMod.ElementDoesntExistsError
 const ArtistNotFound = errorsMod.ArtistNotFound
+const ObserverMod = require('./Observer')
+const Observer = ObserverMod.Observer
+const observer = new Observer()
 
 class UNQfy {
   constructor() {
@@ -36,6 +39,7 @@ class UNQfy {
   */ 
     if(! this.containsArtist(artistData.name)){
       let artist = new Artist(this.lastId,artistData.name,artistData.country);
+      observer.NotificarElementoAgregado(artist)
       this.lastId += 1;
       this.artists.push(artist);
       return artist;
@@ -75,6 +79,7 @@ class UNQfy {
   */
       let artist =  this.getArtistById(artistId);
       let album = new Album(this.lastId,albumData.name,albumData.year,artist);
+      observer.NotificarElementoAgregado(album)
       this.lastId+= 1;
       artist.addAlbum(album);
       return album;
@@ -105,6 +110,7 @@ class UNQfy {
     let albums = this.getAllAlbums();
     let album =  albums.find(a=> a.getId() == albumId);
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres);
+    observer.NotificarElementoAgregado(track)
     this.lastId += 1;
     album.addTrack( track)
     return track;

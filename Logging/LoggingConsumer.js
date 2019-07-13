@@ -11,7 +11,8 @@ const options = {
 class LoggingConsumer {
 
     NotificarElementoAgregado(elementoAgregado) {
-        rp.post(url +'logging/addElement/',{json: {'tipo': typeof elementoAgregado,
+      
+        rp.post(url +'logging/addElement/',{json: {'tipo': elementoAgregado.constructor.name,
                                                    'name': elementoAgregado.name,}})
     }
     
