@@ -31,9 +31,8 @@ let subscriptionManager = new subsManager.SubscriptionManager();
 router.post('/subscribe',(req,res,next) =>{
     if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON;
     checkArtistFromUNQfy(req.body.artistId).then(()=>{
-            console.log("subscribe - notifierAPI")   
+            console.log(" subscribe - notifierAPI.js")   
             subscriptionManager.addSubscriber(req.body.artistId, req.body.email)
-            
             res.status(200)
             res.json({})
             }).catch(error => {console.log(error)})
@@ -46,7 +45,7 @@ router.post('/subscribe',(req,res,next) =>{
 router.delete('/unsubscribe', (req, res, next) => {
     if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON;
     checkArtistFromUNQfy(req.body.artistId).then(()=> {               
-        console.log(" unsubscribe - notifierAPI")
+        console.log(" unsubscribe - notifierAPI.js")
         subscriptionManager.deleteSubscriber(req.body.artistId, req.body.email)
         res.status(200)
         res.json({})
@@ -76,7 +75,7 @@ router.get('/subscriptions', (req, res, next)=>{
     let artistId = Number(req.query.artistId)
     if(req.query.artistId === undefined) throw new apiErrors.MissingArgumentJSON();
     checkArtistFromUNQfy(req.query.artistId).then(()=>{        
-        console.log(" notify - notifierAPI.js")
+        console.log(" subscriptions - notifierAPI.js")
         res.status(200)
         res.json({
             artistId: artistId,

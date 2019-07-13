@@ -30,7 +30,7 @@ class SubscriptionManager{
   }
 
   deleteSubscriber(artistId, emailSub){
-    console.log('deleteSubscribers - notifier.js')
+    console.log('deleteSubscriber')
     console.log('deleting artistId: '+artistId + ' email: '+ emailSub)
     if (subscriptions.has(artistId)){
       let list = subscriptions.get(artistId);

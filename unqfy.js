@@ -17,8 +17,6 @@ const errorsMod = require('./errors')
 const ElementAlreadyExistsError = errorsMod.ElementAlreadyExistsError
 const ElementDoesntExistsError = errorsMod.ElementDoesntExistsError
 const ArtistNotFound = errorsMod.ArtistNotFound
-const observerMod = require('./observer')
-const Observer = observerMod.Observer
 
 class UNQfy {
   constructor() {
@@ -356,7 +354,7 @@ class UNQfy {
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy,Artist,Album,Track,PlayListGenerator,PlayList, MusixMatchClient, Observer];
+    const classes = [UNQfy,Artist,Album,Track,PlayListGenerator,PlayList, MusixMatchClient];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
