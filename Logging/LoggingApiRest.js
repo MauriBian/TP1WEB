@@ -16,20 +16,20 @@ function WriteFile(logg){
 }
 
 router.post("/info",(req,res,next) => {
-
-    loggly.logTest("probando 1 2 3")
+    loggly.NotificarInfo(req.body.mensaje)
     WriteFile(req.body.mensaje)
     res.json(req.body.mensaje)
 })
 
 router.post('/warning',(req,res,next)=>{
+    loggly.NotificarWarning(logg)
     WriteFile(req.body.mensaje)
     res.json(req.body.mensaje)
 })
 
 router.post('/error',(req,res,next)=> {
-    loggly.logTest("probando 1 2 3")
     const logg = req.body.mensaje + ' {Error}\n'
+    loggly.NotificarError(logg)
     WriteFile(logg)
     res.json(logg)
 })
