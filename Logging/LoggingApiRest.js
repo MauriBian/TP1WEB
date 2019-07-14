@@ -1,4 +1,5 @@
 const express = require('express')
+const loggly = require('./LogglyConsumer')
 const app = express()
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5003;
@@ -14,19 +15,20 @@ function WriteFile(logg){
     fs.appendFileSync(filename,logg)
 }
 
-router.post("/addElement",(req,res,next) => {
-    const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue agregado a UNQFY {Info} \n`
-    WriteFile(logg)
-    res.json(logg)
+router.post("/info",(req,res,next) => {
+
+    loggly.logTest("probando 1 2 3")
+    WriteFile(req.body.mensaje)
+    res.json(req.body.mensaje)
 })
 
-router.post('/elementRemoved',(req,res,next)=>{
-    const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue eliminado de UNQFY {Warning}\n`
-    WriteFile(logg)
-    res.json(logg)
+router.post('/warning',(req,res,next)=>{
+    WriteFile(req.body.mensaje)
+    res.json(req.body.mensaje)
 })
 
 router.post('/error',(req,res,next)=> {
+    loggly.logTest("probando 1 2 3")
     const logg = req.body.mensaje + ' {Error}\n'
     WriteFile(logg)
     res.json(logg)
