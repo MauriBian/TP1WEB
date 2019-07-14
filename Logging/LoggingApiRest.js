@@ -17,15 +17,20 @@ function WriteFile(logg){
 router.post("/addElement",(req,res,next) => {
     const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue agregado a UNQFY {Info} \n`
     WriteFile(logg)
-    res.json(req.body)
+    res.json(logg)
 })
 
 router.post('/elementRemoved',(req,res,next)=>{
-    const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue eliminado de UNQFY {Info}\n`
+    const logg = `El ${req.body.tipo} con nombre ${req.body.name} fue eliminado de UNQFY {Warning}\n`
     WriteFile(logg)
-    res.json(req.body)
+    res.json(logg)
 })
 
+router.post('/error',(req,res,next)=> {
+    const logg = req.body.mensaje + ' {Error}\n'
+    WriteFile(logg)
+    res.json(logg)
+})
 
 
 

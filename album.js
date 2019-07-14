@@ -1,6 +1,9 @@
 const Searchable = require ('./searchable.js');
 const errorsMod = require('./errors')
 const ElementAlreadyExistsError = errorsMod.ElementAlreadyExistsError
+const NotificadorMod = require('./Notificador')
+const Notificador = NotificadorMod.Notificador
+const notificador = new Notificador()
 
 class Album extends Searchable{
   constructor(_id, _name, _year, _artist){
@@ -39,7 +42,9 @@ class Album extends Searchable{
       this.tracks.push(track);
     }
     else{
-      throw new ElementAlreadyExistsError("El track ya existe en el album");
+      let error = new ElementAlreadyExistsError(`El track ${track.name} ya se encuentra en el album`);
+      notificador.NotificarError(error)
+      throw error
     }
   }
 

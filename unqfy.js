@@ -17,7 +17,9 @@ const errorsMod = require('./errors')
 const ElementAlreadyExistsError = errorsMod.ElementAlreadyExistsError
 const ElementDoesntExistsError = errorsMod.ElementDoesntExistsError
 const ArtistNotFound = errorsMod.ArtistNotFound
-
+const NotificadorMod = require('./Notificador')
+const Notificador = NotificadorMod.Notificador
+const notificador = new Notificador()
 
 class UNQfy {
   constructor() {
@@ -39,10 +41,13 @@ class UNQfy {
       let artist = new Artist(this.lastId,artistData.name,artistData.country);
       this.lastId += 1;
       this.artists.push(artist);
+      notificador.NotificarElementoAgregado(artist)
       return artist;
     }
     else{
-      throw new ElementAlreadyExistsError("El/La artista "+artistData.name+ " ya se encuentra en el sistema");
+      let error = new ElementAlreadyExistsError("El/La artista "+artistData.name+ " ya se encuentra en el sistema")
+      notificador.NotificarError(error)
+      throw error;
     }
   }
   
@@ -78,6 +83,7 @@ class UNQfy {
       let album = new Album(this.lastId,albumData.name,albumData.year,artist);
       this.lastId+= 1;
       artist.addAlbum(album);
+      notificador.NotificarElementoAgregado(album)
       return album;
     }
 
@@ -108,6 +114,7 @@ class UNQfy {
     let track = new Track(this.lastId,trackData.name,trackData.duration,trackData.genres);
     this.lastId += 1;
     album.addTrack( track)
+    notificador.NotificarElementoAgregado(track)
     return track;
   }
 
@@ -129,12 +136,14 @@ class UNQfy {
       if (this.playLists.length > 0){
         this.playLists.forEach(elem => elem.removeTracks(tracks));
       }
-      
+      notificador.NotificarElementoEliminado(artist)
       this.artists = this.removeElement(artistId,this.artists)
     }
 
      else{
-      throw new ElementDoesntExistsError ("Error : El artista que intenta borrar no existe");
+      let error = new ElementDoesntExistsError (`Error : El artista  que intenta borrar no existe`);
+      notificador.NotificarError(error)
+      throw error
     }
   }
 
@@ -149,10 +158,13 @@ class UNQfy {
       if (this.playLists.length > 0){
         this.playLists.forEach(elem => elem.tracks = this.removeElement(albumId,elem.tracks));
       }
+      notificador.NotificarElementoEliminado(album)
     }
    
     else{
-      throw new ElementDoesntExistsError ("Error: El album que intenta borrar no existe");
+      let error = new ElementDoesntExistsError (`Error: El album que intenta borrar no existe`);
+      notificador.NotificarError(error)
+      throw error
     }
   }
 
@@ -165,9 +177,12 @@ class UNQfy {
           elem.tracks = this.removeElement(id,elem.tracks)
         } );
       }
+      notificador.NotificarElementoEliminado(track)
     }
     else{
-      throw new ElementDoesntExistsError ("Error: El track que intenta borrar no existe");
+      let error = new ElementDoesntExistsError ("Error: El track que intenta borrar no existe");
+      notificador.NotificarError(error)
+      throw error
     }
   }
 

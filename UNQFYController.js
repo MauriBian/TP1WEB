@@ -1,8 +1,6 @@
 const unqmod = require("./unqfy")
 const fs = require('fs'); 
-const NotificadorMod = require('./Notificador')
-const Notificador = NotificadorMod.Notificador
-const notificador = new Notificador()
+
 
 function getUNQfy(filename = 'data.json') {
     let unqfy = new unqmod.UNQfy();
@@ -19,7 +17,6 @@ function getUNQfy(filename = 'data.json') {
 function addArtist(artistJson){
     let unq = getUNQfy()
     let artist = unq.addArtist(artistJson)
-    notificador.NotificarElementoAgregado(artist)
     saveUNQfy(unq)
     return artist
 
@@ -61,7 +58,6 @@ function updateArtist(id,artistObj){
 function RemoveArtist(id){
   let unq= getUNQfy()
   let artist = unq.getArtistById(id)
-  notificador.NotificarElementoEliminado(artist)
   unq.RemoveArtist(id)
   saveUNQfy(unq)
 }
@@ -120,7 +116,6 @@ function UpdateAlbum(id,albumObj){
 function RemoveAlbum(id){
   let unq = getUNQfy()
   album = unq.getAlbumById(id)
-  notificador.NotificarElementoEliminado(album)
   unq.RemoveAlbum(id)
   saveUNQfy(unq)
 }
@@ -131,7 +126,6 @@ function addAlbum(albumData){
     albumData.artistId,
     {name : albumData.name,
     year : albumData.year})
-  notificador.NotificarElementoAgregado(album)
   saveUNQfy(unq)
   return AlbumWithoutArtist(album)
 }
@@ -143,7 +137,6 @@ function addTrack(trackData){
     duration : trackData.duration,
     genres : trackData.genres
   })
-  notificador.NotificarElementoAgregado(track)
   saveUNQfy(unq)
   return track
 }
@@ -170,7 +163,6 @@ function saveLyrics(idTrack){
 function RemoveTrack(idTrack){
   let unq = getUNQfy()
   let track = unq.getTrackById(idTrack)
-  notificador.NotificarElementoEliminado(track)
   unq.RemoveTrack(idTrack)
   saveUNQfy(unq)
 }

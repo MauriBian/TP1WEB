@@ -20,6 +20,11 @@ class LoggingConsumer {
         rp.post(url+'logging/elementRemoved/',{json: {'tipo': elementoEliminado.constructor.name,
                                                     'name': elementoEliminado.name}})
     }
+
+    NotificarError(error){
+        rp.post(url + 'logging/error/',{json:{mensaje: error.message}})
+    }
+
     
 }
 module.exports={

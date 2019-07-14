@@ -12,6 +12,10 @@ class Notificador {
         this.suscriptores.forEach(elem => elem.NotificarElementoEliminado(elementoEliminado))
     }
 
+    NotificarError(error){
+        this.suscriptores.forEach(elem => elem.NotificarError(error))
+    }
+
     Suscribirse(suscriptor){
         this.suscriptores.push(suscriptor)
     }
