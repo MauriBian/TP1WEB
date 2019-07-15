@@ -42,5 +42,5 @@ class APIError extends Error {
      RelatedElementNotFound : RelatedElementNotFound,
      InvalidJSON,
      MissingArgumentJSON : MissingArgumentJSON,
-     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON]
+     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON, MissingArgumentJSON]
  }
