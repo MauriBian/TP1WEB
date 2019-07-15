@@ -8,9 +8,18 @@ const port = process.env.PORT || 5003;
 const router = express.Router();
 const fs = require('fs');
 const filename = 'loggs.json'
-const status = "ON"
+var status = "ON"
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
+
+
+app.post('/logging/status',(req,res,next) => {
+    status = req.body.status
+    res.send(`Server ${status}`)
+}) 
+
+
+
 app.use((req,res,next) => {
     if (status == "ON"){
         next()
@@ -49,6 +58,7 @@ router.get('/status', (req,res,next) => {
     res.status(200);
     res.json("OK");
 })
+
 
 
 function errorHandler(err,req,res,next){
