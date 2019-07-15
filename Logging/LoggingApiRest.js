@@ -1,13 +1,24 @@
 const express = require('express')
 const loggly = require('./LogglyConsumer')
+const apiErrors = require("../ApiErrors")
+const ServerOFFError = apiErrors.ServerOFFError
 const app = express()
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5003;
 const router = express.Router();
 const fs = require('fs');
 const filename = 'loggs.json'
+const status = "ON"
 app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
+app.use((req,res,next) => {
+    if (status == "ON"){
+        next()
+    }
+    else{
+        next(new ServerOFFError())
+    }
+})
 app.use('/logging', router);
 
 function WriteFile(logg){
@@ -34,8 +45,26 @@ router.post('/error',(req,res,next)=> {
     res.json(logg)
 })
 
+router.post('/serverstatus',(req,res,next) => {
+    status = req.body.status
+    res.send(req.body.status)
+})
 
+function errorHandler(err,req,res,next){
+ 
+    if (err instanceof ServerOFFError){
+        res.status(400)
+        res.json({
+            status: err.status,
+            errorCode : err.errorCode,
+        })
+    }
+    else{
+        next()
+    }
+}
 
+app.use(errorHandler)
 
 app.listen(port);
 console.log('Logging Api Ready! ' + port);
