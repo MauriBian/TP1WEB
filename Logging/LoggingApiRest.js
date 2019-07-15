@@ -34,6 +34,11 @@ router.post('/error',(req,res,next)=> {
     res.json(logg)
 })
 
+router.get('/status', (req,res,next) => {
+    res.status(200);
+    res.json("OK");
+})
+
 
 
 
