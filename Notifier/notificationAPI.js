@@ -104,6 +104,12 @@ router.delete('/subscriptions', (req, res, next)=> {
     next(new apiErrors.RelatedElementNotFound())})
 })
 
+router.get('/status', (req,res,next) => {
+    res.status(200);
+    res.json("OK");
+})
+
+
 
 //Chequea usando la API de UNQfy que el artista exista.
 function checkArtistFromUNQfy(artistId){
@@ -139,6 +145,8 @@ function errorHandler(err,req,res,next){
         next()
     }
 }
+
+
 
 app.use(errorHandler); 
 app.listen(port);
