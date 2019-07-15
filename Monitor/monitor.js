@@ -16,7 +16,7 @@ const rp = require('request-promise');
 //ENDPOINTS A VERIFICAR
 const unqfyURL = 'http://localhost:5001/api/status';
 const loggingURL = 'http://localhost:5003/logging/status';
-const notificationURL = 'http://localhost:5002/api/artists/0';
+const notificationURL = 'http://localhost:5002/api/status';
 
 //HEADER PARA LOS ENDPOINT
 const options = function(_url) {
