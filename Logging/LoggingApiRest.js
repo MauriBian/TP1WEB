@@ -42,15 +42,15 @@ router.post("/info",(req,res,next) => {
 })
 
 router.post('/warning',(req,res,next)=>{
-    loggly.NotificarWarning(logg)
+    loggly.NotificarWarning(req.body.mensaje)
     WriteFile(req.body.mensaje)
     res.json(req.body.mensaje)
 })
 
 router.post('/error',(req,res,next)=> {
-    const logg = req.body.mensaje + ' {Error}\n'
+    const logg = req.body.mensaje + ' {Error}'
     loggly.NotificarError(logg)
-    WriteFile(logg)
+    WriteFile(logg + '\n')
     res.json(logg)
 })
 
