@@ -30,6 +30,12 @@ class APIError extends Error {
      }
  }
 
+ class ServerOFFError extends APIError{
+     constructor(){
+         super("Server OFF" , 400 , "SERVER_OFF")
+     }
+ }
+
  class MissingArgumentJSON extends APIError{
     constructor(){
         super("MissingArgumentJSON",400,"BAD_REQUEST")
@@ -42,5 +48,6 @@ class APIError extends Error {
      RelatedElementNotFound : RelatedElementNotFound,
      InvalidJSON,
      MissingArgumentJSON : MissingArgumentJSON,
-     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON, MissingArgumentJSON]
+     ServerOFFError : ServerOFFError,
+     Errores : [ElementAlreadyExistsError,ElementNotFound,RelatedElementNotFound,InvalidJSON]
  }
