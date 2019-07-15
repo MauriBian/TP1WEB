@@ -29,28 +29,30 @@ let subscriptionManager = new subsManager.SubscriptionManager();
 //Subscribe un email a un artista. Si el email ya está suscrito no hace nada.
 //Este EP chequea usando la API de UNQfy que el artista exista.
 router.post('/subscribe',(req,res,next) =>{
-    if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON;
-    checkArtistFromUNQfy(req.body.artistId).then(()=>{
-            console.log(" subscribe - notifierAPI.js")   
+    checkMissingArgument(req.body, 2);
+    if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON();
+    
+    checkArtistFromUNQfy(req.body.artistId).then(()=>{   
             subscriptionManager.addSubscriber(req.body.artistId, req.body.email)
             res.status(200)
             res.json({})
-            }).catch(error => {console.log(error)})
-       
-   
+            }).catch(error => {console.log(error)
+                next (new apiErrors.RelatedElementNotFound())})
 })
+
 
 //Desubscribe un email de un feed. Si el email no esta suscrito no hace nada.
 //Este EP chequea usando la API de UNQfy que el artista exista.
 router.delete('/unsubscribe', (req, res, next) => {
-    if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON;
-    checkArtistFromUNQfy(req.body.artistId).then(()=> {               
-        console.log(" unsubscribe - notifierAPI.js")
+    checkMissingArgument(req.body, 2);
+    if(req.body.artistId === undefined || req.body.email === undefined) throw new apiErrors.InvalidJSON();
+    
+    checkArtistFromUNQfy(req.body.artistId).then(()=> {
         subscriptionManager.deleteSubscriber(req.body.artistId, req.body.email)
         res.status(200)
         res.json({})
-        
-    }).catch(error => {console.log(error)})
+    }).catch(error => {console.log(error)
+        next (new apiErrors.RelatedElementNotFound())})
 })
 
 
@@ -58,14 +60,16 @@ router.delete('/unsubscribe', (req, res, next) => {
 //utilizará el subject, from y cuerpo de email pasados en el body del request.
 //Este EP chequea usando la API de UNQfy que el artista exista.
 router.post('/notify', (req, res, next) => {
+    checkMissingArgument(req.body, 3);
     if(req.body.artistId === undefined || req.body.subject === undefined || 
-        req.body.message === undefined) throw new apiErrors.MissingArgumentJSON();
+        req.body.message === undefined) throw new apiErrors.InvalidJSON();
+    
     checkArtistFromUNQfy(req.body.artistId).then(()=>{        
-        console.log(" notify - notifierAPI.js")
+        subscriptionManager.notifySubscribers(req.body.artistId, req.body.subject, req.body.message)
         res.status(200)
         res.json({})
-        subscriptionManager.notifySubscribers(req.body.artistId, req.body.subject, req.body.message)
-    }).catch(error => {console.log(error)})
+    }).catch(error => {console.log(error)
+        next (new apiErrors.RelatedElementNotFound())})
 })
 
 
@@ -73,35 +77,33 @@ router.post('/notify', (req, res, next) => {
 //Este EP chequea usando la API de UNQfy que el artista exista.
 router.get('/subscriptions', (req, res, next)=>{
     let artistId = Number(req.query.artistId)
-    if(req.query.artistId === undefined) throw new apiErrors.MissingArgumentJSON();
+    if(req.query.artistId === undefined) throw new apiErrors.InvalidJSON();
     checkArtistFromUNQfy(req.query.artistId).then(()=>{        
-        console.log(" subscriptions - notifierAPI.js")
+        let subscribers = subscriptionManager.getSubscribers(artistId);
+        if (subscribers === undefined) {subscribers = []}
         res.status(200)
         res.json({
             artistId: artistId,
-            subscriptors: subscriptionManager.getSubscribers(artistId)
-            //subscribers... pero esta como subscriptors en el tp
+            subscriptors: subscribers
         })
-    }).catch(error => {console.log(error)})
-    
-
+    }).catch(error => {console.log(error)
+        next (new apiErrors.RelatedElementNotFound())})
 })
 
 
 //Borra todas las suscripciones para un artista (útil cuando se borra un artista en UNQfy).
 //Este EP chequea usando la API de UNQfy que el artista exista.
 router.delete('/subscriptions', (req, res, next)=> {
-    let artistId = req.body.artistId
-    if(req.query.artistId === undefined) throw new apiErrors.MissingArgumentJSON();
-    checkArtistFromUNQfy(artistId).then(()=>{        
-        console.log(" delete (all) subscriptions - notifierAPI.js")
-        subscriptionManager.deleteAllSubscribers(artistId)
+    checkMissingArgument(req.body, 1);
+    if(req.body.artistId === undefined) throw new apiErrors.InvalidJSON();
+    checkArtistFromUNQfy(req.body.artistId).then(()=>{        
+        subscriptionManager.deleteAllSubscribers(req.body.artistId)
         res.status(200)
         res.json({})
-    }).catch(error => {console.log(error)})
-    
-    
+    }).catch(error => {console.log(error)
+    next(new apiErrors.RelatedElementNotFound())})
 })
+
 
 //Chequea usando la API de UNQfy que el artista exista.
 function checkArtistFromUNQfy(artistId){
@@ -111,6 +113,11 @@ function checkArtistFromUNQfy(artistId){
     }).catch(error => {console.log(error.message)
     throw new apiErrors.RelatedElementNotFound})
 }
+
+function checkMissingArgument(body, size){
+    if (Object.keys(body).length != size) throw new apiErrors.MissingArgumentJSON()
+}
+
 
 function errorHandler(err,req,res,next){
     console.log(err)

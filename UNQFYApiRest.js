@@ -92,6 +92,12 @@ router.get("/artists",(req,res) =>{
 
 })
 
+
+router.get("/status",(req,res) =>{
+    res.status(200);
+    res.json("OK");
+})
+
 router.post("/albums",(req,res,next) => {
     if (req.body.name && req.body.year && req.body.artistId !== undefined){
         

@@ -45,10 +45,11 @@ router.post('/error',(req,res,next)=> {
     res.json(logg)
 })
 
-router.post('/serverstatus',(req,res,next) => {
-    status = req.body.status
-    res.send(req.body.status)
+router.get('/status', (req,res,next) => {
+    res.status(200);
+    res.json("OK");
 })
+
 
 function errorHandler(err,req,res,next){
  

@@ -1,8 +1,11 @@
 const LoggingConsumerMod = require('./Logging/LoggingConsumer')
 const LoggingConsumer = LoggingConsumerMod.LoggingConsumer
+const notifier = require('./Notifier/notifierManager')
+
 class Notificador {
     constructor() {
         this.suscriptores = [new LoggingConsumer()]
+        this.notifierSub = new notifier.NotifierManager()
     }
     NotificarElementoAgregado(elementoAgregado) {
         this.suscriptores.forEach(elem => elem.NotificarElementoAgregado(elementoAgregado))
@@ -22,6 +25,16 @@ class Notificador {
 
     EliminarSuscripcion(suscriptor){
         this.suscriptores = this.suscriptores.filter(elem => elem == suscriptor)
+    }
+
+
+    //Mensajes para la api de notificacion, para enviar mails a los suscriptores
+    notifyAlbumAdded(artistId, artistName, albumName){
+        this.notifierSub.manageAlbumAdded(artistId, artistName, albumName)
+    }
+
+    notifyArtistRemoved(artistId){
+        this.notifierSub.manageArtistRemoved(artistId)
     }
 }
 

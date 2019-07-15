@@ -83,7 +83,8 @@ class UNQfy {
       let album = new Album(this.lastId,albumData.name,albumData.year,artist);
       this.lastId+= 1;
       artist.addAlbum(album);
-      notificador.NotificarElementoAgregado(album)
+      notificador.NotificarElementoAgregado(album) 
+      notificador.notifyAlbumAdded(artist.id, artist.name, album.name) //notificacion para notificationAPI
       return album;
     }
 
@@ -137,6 +138,7 @@ class UNQfy {
         this.playLists.forEach(elem => elem.removeTracks(tracks));
       }
       notificador.NotificarElementoEliminado(artist)
+      notificador.notifyArtistRemoved(artistId)// notificacion para notificationAPI
       this.artists = this.removeElement(artistId,this.artists)
     }
 
