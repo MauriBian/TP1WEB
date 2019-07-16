@@ -3,7 +3,7 @@ const rp = require('request-promise');
 const app = express()
 const subsManager = require ("./subscriptionManager")
 
-const apiErrors = require("../ApiErrors.js")
+const apiErrors = require("./ApiErrors.js")
 
 const bodyParser = require('body-parser')
 const port = process.env.PORT || 5002;
@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended : true}))
 app.use(bodyParser.json())
 app.use('/api', router);
 
-const unqfyURL = 'http://localhost:5001/api';
+const unqfyURL = 'http://172.18.0.2:5001/api';
 const options = {
     url: '',
     headers: { 

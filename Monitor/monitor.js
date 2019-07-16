@@ -5,18 +5,16 @@ const app = express();
 const MonitorMessage = require('./monitormessage');
 const MonitoreableService = require('./monitoreableservice');
 
-const apiErrors = require("../ApiErrors");
-
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5005;
 const router = express.Router();
 const rp = require('request-promise');
 
 
 //ENDPOINTS A VERIFICAR
-const unqfyURL = 'http://localhost:5001/api/status';
-const loggingURL = 'http://localhost:5003/logging/status';
-const notificationURL = 'http://localhost:5002/api/status';
+const unqfyURL = 'http://172.18.0.2:5001/api/status';
+const loggingURL = 'http://172.18.0.3:5003/logging/status';
+const notificationURL = 'http://172.18.0.4:5002/api/status';
 
 //HEADER PARA LOS ENDPOINT
 const options = function(_url) {

@@ -1,6 +1,6 @@
 const express = require('express')
 const loggly = require('./LogglyConsumer')
-const apiErrors = require("../ApiErrors")
+const apiErrors = require("./ApiErrors")
 const ServerOFFError = apiErrors.ServerOFFError
 const app = express()
 const bodyParser = require('body-parser')

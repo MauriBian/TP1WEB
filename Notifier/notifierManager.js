@@ -1,7 +1,7 @@
 
 const rp = require ('request-promise');
 
-const notificationAPI_URL = 'http://localhost:5002/api';
+const notificationAPI_URL = 'http://172.18.0.4:5002/api';
 const options = {
     uri: '',
     headers: { 

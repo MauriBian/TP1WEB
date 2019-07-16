@@ -1,6 +1,6 @@
 const LoggingConsumerMod = require('./LoggingConsumer')
 const LoggingConsumer = LoggingConsumerMod.LoggingConsumer
-const notifier = require('./Notifier/notifierManager')
+const notifier = require('./notifierManager')
 
 class Notificador {
     constructor() {

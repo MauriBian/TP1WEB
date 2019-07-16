@@ -29,7 +29,7 @@ router.post("/artists",(req,res,next) => {
                 "country" : artist.country})
             }
 
-        catch{
+        catch(e){
 
             next(new ElementAlreadyExistsError())
         }
@@ -48,7 +48,7 @@ router.get("/artists/:id",(req,res,next) => {
         res.status(200)
         res.json(unqController.getArtistById(req.params.id))
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }})
 
@@ -61,7 +61,7 @@ router.put("/artists/:id",(req,res,next) => {
             res.json(unqController.updateArtist(parseInt(req.params.id),req.body))
           
         }
-        catch{
+        catch(e){
             next(new ElementNotFound())
         }
     }
@@ -75,7 +75,7 @@ router.delete("/artists/:id",(req,res,next) => {res.status(204)
     unqController.RemoveArtist(req.params.id)
     res.send("Artista Eliminado")
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }
 })
@@ -110,7 +110,7 @@ router.post("/albums",(req,res,next) => {
                 next(new RelatedElementNotFound())
             }
         }
-        catch{
+        catch(e){
             next(new ElementAlreadyExistsError())
         }
     }
@@ -125,7 +125,7 @@ router.get("/albums/:id",(req,res,next) => {
         res.status(200)
         res.json(unqController.getAlbumById(req.params.id))
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }
 })
@@ -136,7 +136,7 @@ router.patch("/albums/:id",(req,res,next) => {
             res.status(200)
             res.json(unqController.UpdateAlbum(req.params.id,req.body))
         }
-        catch{
+        catch(e){
             next(new ElementNotFound())
         }
     }
@@ -152,7 +152,7 @@ router.delete("/albums/:id",(req,res,next) => {
         unqController.RemoveAlbum(req.params.id)
         res.send("Album Eliminado")
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }
 })
@@ -177,7 +177,7 @@ router.post("/tracks",(req,res,next) => {
             res.json(track)
             }
 
-        catch{
+        catch(e){
 
             next(new ElementAlreadyExistsError())
         }
@@ -193,7 +193,7 @@ router.delete("/tracks/:id",(req,res,next) => {
         unqController.RemoveTrack(req.params.id)
         res.send("Track Eliminado")
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }
 })
@@ -204,7 +204,7 @@ router.get("/tracks/:id/lyrics",(req,res,next)=> {
         let lyrics = unqController.getLyrics(req.params.id)
         res.json(lyrics)
     }
-    catch{
+    catch(e){
         next(new ElementNotFound())
     }
 })
