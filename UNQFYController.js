@@ -1,6 +1,7 @@
 const unqmod = require("./unqfy")
 const fs = require('fs'); 
 
+
 function getUNQfy(filename = 'data.json') {
     let unqfy = new unqmod.UNQfy();
     if (fs.existsSync(filename)) {
@@ -20,6 +21,8 @@ function addArtist(artistJson){
     return artist
 
 }
+
+
 
 function parseAlbumsArtist(artistObj){
 
@@ -54,6 +57,7 @@ function updateArtist(id,artistObj){
 
 function RemoveArtist(id){
   let unq= getUNQfy()
+  let artist = unq.getArtistById(id)
   unq.RemoveArtist(id)
   saveUNQfy(unq)
 }
@@ -111,6 +115,7 @@ function UpdateAlbum(id,albumObj){
 
 function RemoveAlbum(id){
   let unq = getUNQfy()
+  album = unq.getAlbumById(id)
   unq.RemoveAlbum(id)
   saveUNQfy(unq)
 }
@@ -123,6 +128,17 @@ function addAlbum(albumData){
     year : albumData.year})
   saveUNQfy(unq)
   return AlbumWithoutArtist(album)
+}
+
+function addTrack(trackData){
+  let unq = getUNQfy()
+  let track = unq.addTrack(trackData.albumId,{
+    name : trackData.name,
+    duration : trackData.duration,
+    genres : trackData.genres
+  })
+  saveUNQfy(unq)
+  return track
 }
 
 function getAlbumById(id){
@@ -142,6 +158,13 @@ function saveLyrics(idTrack){
     saveUNQfy(unq)
   })
 
+}
+
+function RemoveTrack(idTrack){
+  let unq = getUNQfy()
+  let track = unq.getTrackById(idTrack)
+  unq.RemoveTrack(idTrack)
+  saveUNQfy(unq)
 }
 
 function getLyrics(idTrack){
@@ -169,4 +192,6 @@ module.exports = {
     getAlbumsByName,
     containsIdTrack,
     getLyrics,
+    addTrack,
+    RemoveTrack
 }
